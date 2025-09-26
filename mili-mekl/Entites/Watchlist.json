@@ -1,0 +1,35 @@
+{
+    "name": "Watchlist",
+    "type": "object",
+    "properties": {
+      "user_email": {
+        "type": "string",
+        "description": "ایمیل کاربر"
+      },
+      "property_id": {
+        "type": "string",
+        "description": "شناسه ملک"
+      },
+      "tref_id": {
+        "type": "string",
+        "description": "شناسه صندوق ملکی"
+      },
+      "item_type": {
+        "type": "string",
+        "enum": [
+          "property",
+          "tref"
+        ],
+        "description": "نوع آیتم در لیست علاقه‌مندی‌ها"
+      },
+      "notes": {
+        "type": "string",
+        "description": "یادداشت‌های شخصی کاربر"
+      },
+      "price_alert": {
+        "type": "number",
+        "description": "هشدار تغییر قیمت"
+      }
+    },
+    "required": []
+  }

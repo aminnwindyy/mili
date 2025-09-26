@@ -1,0 +1,43 @@
+{
+  "name": "Transaction",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "deposit",
+        "withdrawal",
+        "investment",
+        "sale",
+        "reward"
+      ]
+    },
+    "amount": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "Rial",
+        "USDT"
+      ],
+      "default": "Rial"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "pending",
+        "failed"
+      ],
+      "default": "completed"
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": []
+}

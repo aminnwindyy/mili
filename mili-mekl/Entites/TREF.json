@@ -1,0 +1,85 @@
+{
+    "name": "TREF",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "نام صندوق ملکی"
+      },
+      "description": {
+        "type": "string",
+        "description": "توضیحات صندوق"
+      },
+      "fund_type": {
+        "type": "string",
+        "enum": [
+          "مسکونی",
+          "تجاری",
+          "اداری",
+          "مختلط"
+        ],
+        "description": "نوع صندوق ملکی"
+      },
+      "target_amount": {
+        "type": "number",
+        "description": "مبلغ هدف جذب سرمایه"
+      },
+      "collected_amount": {
+        "type": "number",
+        "description": "مبلغ جمع‌آوری شده"
+      },
+      "token_price": {
+        "type": "number",
+        "description": "قیمت هر واحد صندوق"
+      },
+      "total_units": {
+        "type": "number",
+        "description": "تعداد کل واحدهای صندوق"
+      },
+      "available_units": {
+        "type": "number",
+        "description": "واحدهای موجود"
+      },
+      "expected_annual_yield": {
+        "type": "number",
+        "description": "بازدهی سالانه مورد انتظار"
+      },
+      "management_fee": {
+        "type": "number",
+        "description": "کارمزد مدیریت"
+      },
+      "properties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "property_id": {
+              "type": "string"
+            },
+            "allocation_percentage": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "manager_name": {
+        "type": "string",
+        "description": "نام مدیر صندوق"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "جذب_سرمایه",
+          "فعال",
+          "بسته",
+          "در_انتظار_تایید"
+        ],
+        "default": "در_انتظار_تایید"
+      },
+      "inception_date": {
+        "type": "string",
+        "format": "date"
+      }
+    },
+    "required": []
+  }

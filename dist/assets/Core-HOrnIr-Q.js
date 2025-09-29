@@ -1,0 +1,1 @@
+async function i({to:e,subject:n,body:o,from_name:c}){return console.log("Mock SendEmail:",{to:e,subject:n,body:o?.slice(0,120)+"...",from_name:c}),{success:!0,id:`mail-${Date.now()}`}}export{i as SendEmail};

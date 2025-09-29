@@ -1,0 +1,49 @@
+{
+    "name": "LoyaltyProgram",
+    "type": "object",
+    "properties": {
+      "user_email": {
+        "type": "string",
+        "description": "ایمیل کاربر"
+      },
+      "current_tier": {
+        "type": "string",
+        "enum": [
+          "Bronze",
+          "Silver",
+          "Gold",
+          "Platinum",
+          "Diamond"
+        ],
+        "default": "Bronze"
+      },
+      "total_points": {
+        "type": "number",
+        "default": 0
+      },
+      "current_tier_points": {
+        "type": "number",
+        "default": 0
+      },
+      "next_tier_requirement": {
+        "type": "number",
+        "default": 1000
+      },
+      "lifetime_investment": {
+        "type": "number",
+        "default": 0
+      },
+      "referrals_count": {
+        "type": "number",
+        "default": 0
+      },
+      "benefits_unlocked": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "مزایای فعال شده"
+      }
+    },
+    "required": []
+  }

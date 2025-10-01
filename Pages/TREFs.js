@@ -32,6 +32,8 @@ export default function TREFs() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedTref, setSelectedTref] = useState(null);
   const [investmentAmount, setInvestmentAmount] = useState("");
+  const [typeFilter, setTypeFilter] = useState('همه');
+  const [sortKey, setSortKey] = useState('default'); // default | yieldDesc | priceAsc | progressDesc
 
   useEffect(() => {
     loadData();
@@ -98,10 +100,20 @@ export default function TREFs() {
   };
 
   const filteredTrefs = trefs.filter(tref =>
-    searchTerm === "" || 
-    tref.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tref.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    (typeFilter === 'همه' || tref.fund_type === typeFilter) && (
+      searchTerm === "" || 
+      tref.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      tref.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  ).sort((a,b)=>{
+    switch (sortKey) {
+      case 'yieldDesc': return (b.expected_annual_yield||0)-(a.expected_annual_yield||0);
+      case 'priceAsc': return (a.token_price||0)-(b.token_price||0);
+      case 'progressDesc':
+        return ((b.collected_amount||0)/(b.target_amount||1)) - ((a.collected_amount||0)/(a.target_amount||1));
+      default: return 0;
+    }
+  });
 
   return (
     <div className="p-6 bg-gradient-to-bl from-slate-50 to-blue-50 min-h-screen">
@@ -161,17 +173,31 @@ export default function TREFs() {
           </Card>
         </div>
 
-        {/* Search */}
+        {/* Search & Filters */}
         <Card className="mb-8 shadow-lg border-0">
           <CardContent className="p-6">
-            <div className="relative">
-              <Search className="absolute right-3 top-3 w-5 h-5 text-slate-400" />
-              <Input
-                placeholder="جستجو در صندوق‌های ملکی..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pr-12 h-12"
-              />
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+              <div className="relative flex-1">
+                <Search className="absolute right-3 top-3 w-5 h-5 text-slate-400" />
+                <Input
+                  placeholder="جستجو در صندوق‌های ملکی..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pr-12 h-12"
+                />
+              </div>
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-slate-600">نوع:</span>
+                {['همه','مسکونی','تجاری','اداری','مختلط'].map(t => (
+                  <Button key={t} size="sm" variant={typeFilter===t?'default':'outline'} onClick={()=>setTypeFilter(t)}>{t}</Button>
+                ))}
+              </div>
+              <div className="flex gap-2 items-center">
+                <span className="text-sm text-slate-600">مرتب‌سازی:</span>
+                <Button size="sm" variant={sortKey==='yieldDesc'?'default':'outline'} onClick={()=>setSortKey('yieldDesc')}>بازدهی ↑</Button>
+                <Button size="sm" variant={sortKey==='priceAsc'?'default':'outline'} onClick={()=>setSortKey('priceAsc')}>قیمت ↑</Button>
+                <Button size="sm" variant={sortKey==='progressDesc'?'default':'outline'} onClick={()=>setSortKey('progressDesc')}>پیشرفت ↑</Button>
+              </div>
             </div>
           </CardContent>
         </Card>

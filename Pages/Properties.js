@@ -52,6 +52,9 @@ function PropertiesContent() {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [sortKey, setSortKey] = useState('newest'); // newest | priceAsc | priceDesc | yieldDesc
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(9);
 
   const applyFilters = useCallback(() => {
     let currentProperties = properties || [];
@@ -195,6 +198,22 @@ function PropertiesContent() {
             <VoiceSearchButton onResult={setSearchTerm} />
             <PropertyFilters filters={filters} setFilters={setFilters} />
           </div>
+          {/* Sort & Page size */}
+          <div className="mt-4 flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
+            <div className="flex gap-2 items-center">
+              <span className="text-sm text-slate-600">مرتب‌سازی:</span>
+              <Button variant={sortKey==='newest'?'default':'outline'} size="sm" onClick={()=>setSortKey('newest')}>جدیدترین</Button>
+              <Button variant={sortKey==='priceAsc'?'default':'outline'} size="sm" onClick={()=>setSortKey('priceAsc')}>قیمت ↑</Button>
+              <Button variant={sortKey==='priceDesc'?'default':'outline'} size="sm" onClick={()=>setSortKey('priceDesc')}>قیمت ↓</Button>
+              <Button variant={sortKey==='yieldDesc'?'default':'outline'} size="sm" onClick={()=>setSortKey('yieldDesc')}>بازدهی ↑</Button>
+            </div>
+            <div className="flex gap-2 items-center">
+              <span className="text-sm text-slate-600">در هر صفحه:</span>
+              <Button variant={pageSize===9?'default':'outline'} size="sm" onClick={()=>{setPageSize(9);setPage(1);}}>9</Button>
+              <Button variant={pageSize===12?'default':'outline'} size="sm" onClick={()=>{setPageSize(12);setPage(1);}}>12</Button>
+              <Button variant={pageSize===18?'default':'outline'} size="sm" onClick={()=>{setPageSize(18);setPage(1);}}>18</Button>
+            </div>
+          </div>
         </div>
 
         {/* لیست املاک */}
@@ -215,9 +234,23 @@ function PropertiesContent() {
               </div>
             ))
           ) : filteredProperties && filteredProperties.length > 0 ? (
-            filteredProperties.map((property) => (
+            // sort & paginate
+            (()=>{
+              const sorted = [...filteredProperties].sort((a,b)=>{
+                switch (sortKey) {
+                  case 'priceAsc': return (a.token_price||0)-(b.token_price||0);
+                  case 'priceDesc': return (b.token_price||0)-(a.token_price||0);
+                  case 'yieldDesc': return (b.expected_annual_return||0)-(a.expected_annual_return||0);
+                  default: return 0;
+                }
+              });
+              const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize));
+              const currentPage = Math.min(page, totalPages);
+              const paged = sorted.slice((currentPage-1)*pageSize, currentPage*pageSize);
+              return paged.map((property) => (
               <PropertyCard key={property.id} property={property} onDoubleClick={() => handleDoubleClick(property)} />
-            ))
+              ));
+            })()
           ) : (
             <div className="col-span-full bg-white rounded-2xl shadow-lg p-12 text-center">
               <Building2 className="w-16 h-16 mx-auto text-slate-300 mb-4" />
@@ -229,6 +262,21 @@ function PropertiesContent() {
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {filteredProperties && filteredProperties.length > 0 && (
+          (()=>{
+            const totalPages = Math.max(1, Math.ceil(filteredProperties.length / pageSize));
+            const currentPage = Math.min(page, totalPages);
+            return (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <Button variant="outline" disabled={currentPage===1} onClick={()=>setPage(p=>Math.max(1,p-1))}>قبلی</Button>
+                <div className="text-sm text-slate-700">صفحه {currentPage} از {totalPages}</div>
+                <Button variant="outline" disabled={currentPage===totalPages} onClick={()=>setPage(p=>Math.min(totalPages,p+1))}>بعدی</Button>
+              </div>
+            );
+          })()
+        )}
       </div>
 
       <InvestmentCart />

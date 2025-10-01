@@ -81,16 +81,14 @@
         "images": [
           "https://images.unsplash.com/photo-1582582744564-0896bf55642c?w=1200&h=800&fit=crop"
         ]
-      }
-    ],
-    // more demo items for richer Explore experience
-    "items": [
+      },
       { "id": "prop-6", "title": "آپارتمان یوسف‌آباد", "address": "تهران، یوسف‌آباد", "property_type": "آپارتمان", "total_value": 4200000000, "token_price": 35000000, "total_tokens": 120, "available_tokens": 90, "expected_annual_return": 16.2, "status": "در_حال_فروش", "images": ["https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=1200&h=800&fit=crop"] },
       { "id": "prop-7", "title": "برج اداری تجدد", "address": "تهران، گیشا", "property_type": "اداری", "total_value": 7600000000, "token_price": 48000000, "total_tokens": 158, "available_tokens": 70, "expected_annual_return": 17.9, "status": "در_حال_فروش", "images": ["https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=800&fit=crop"] },
       { "id": "prop-8", "title": "مجتمع تجاری مدرن", "address": "اصفهان، چهارباغ", "property_type": "تجاری", "total_value": 6300000000, "token_price": 52000000, "total_tokens": 121, "available_tokens": 44, "expected_annual_return": 19.3, "status": "در_حال_فروش", "images": ["https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=800&fit=crop"] },
       { "id": "prop-9", "title": "ویلای ساحلی", "address": "کیش، ساحل مرجان", "property_type": "خانه", "total_value": 9800000000, "token_price": 90000000, "total_tokens": 109, "available_tokens": 30, "expected_annual_return": 21.1, "status": "در_حال_فروش", "images": ["https://images.unsplash.com/photo-1502005229762-cf1b2da7c52f?w=1200&h=800&fit=crop"] },
       { "id": "prop-10", "title": "انبار صنعتی پارس", "address": "کرج، صفادشت", "property_type": "صنعتی", "total_value": 5400000000, "token_price": 42000000, "total_tokens": 129, "available_tokens": 88, "expected_annual_return": 18.4, "status": "در_حال_فروش", "images": ["https://images.unsplash.com/photo-1582582744564-0896bf55642c?w=1200&h=800&fit=crop"] }
     ],
+    
     "properties": {
       "title": {
         "type": "string",

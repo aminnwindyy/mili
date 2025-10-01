@@ -18,7 +18,7 @@ import {
   Target,
   Coins
 } from "lucide-react";
-import { formatCurrency } from "../components/ui/formatters";
+import { formatCurrency } from "@/components/ui/formatters";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 

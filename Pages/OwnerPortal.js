@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Plus, Building2, TrendingUp, Users, DollarSign } from 'lucide-react';
-import { formatCurrency } from '../components/ui/formatters';
+import { formatCurrency } from '@/components/ui/formatters';
 
 export default function OwnerPortal() {
   const [myProperties, setMyProperties] = useState([]);

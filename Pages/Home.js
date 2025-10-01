@@ -37,16 +37,16 @@ import {
   ArrowUpLeft // Added ArrowUpLeft icon
 } from "lucide-react";
 
-import Hero3D from "../components/home/Hero3D";
-import FeatureCard from "../components/home/FeatureCard";
-import StatsSection from "../components/home/StatsSection";
-import EcosystemFlow from "../components/home/EcosystemFlow";
-import AdvancedFeatures from "../components/home/AdvancedFeatures";
-import ProjectsShowcase from "../components/home/ProjectsShowcase";
-import MarketInsights from "../components/home/MarketInsights";
-import PublicHeader from "../components/home/PublicHeader";
-import PublicFooter from "../components/home/PublicFooter";
-import GuestModeButton from "../components/ui/GuestModeButton"; // Added GuestModeButton
+import Hero3D from "@/components/home/Hero3D";
+import FeatureCard from "@/components/home/FeatureCard";
+import StatsSection from "@/components/home/StatsSection";
+import EcosystemFlow from "@/components/home/EcosystemFlow";
+import AdvancedFeatures from "@/components/home/AdvancedFeatures";
+import ProjectsShowcase from "@/components/home/ProjectsShowcase";
+import MarketInsights from "@/components/home/MarketInsights";
+import PublicHeader from "@/components/home/PublicHeader";
+import PublicFooter from "@/components/home/PublicFooter";
+import GuestModeButton from "@/components/ui/GuestModeButton"; // Added GuestModeButton
 
 export default function Home() {
   const navigate = useNavigate(); // Initialize useNavigate hook

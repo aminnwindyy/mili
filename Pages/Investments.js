@@ -16,8 +16,8 @@ import {
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 
-import InvestmentCard from "../components/investments/InvestmentCard";
-import InvestmentStats from "../components/investments/InvestmentStats";
+import InvestmentCard from "@/components/investments/InvestmentCard";
+import InvestmentStats from "@/components/investments/InvestmentStats";
 
 export default function Investments() {
   const [investments, setInvestments] = useState([]);

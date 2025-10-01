@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { formatCurrency } from "../components/ui/formatters";
+import { formatCurrency } from "@/components/ui/formatters";
 import { 
   Building2, 
   Coins, 
@@ -20,14 +20,14 @@ import {
   Settings
 } from "lucide-react";
 
-import StatsCard from "../components/dashboard/StatsCard";
-import RecentProperties from "../components/dashboard/RecentProperties";
-import InvestmentOverview from "../components/dashboard/InvestmentOverview";
-import InvestmentJourneyWidget from "../components/dashboard/InvestmentJourneyWidget";
-import InteractiveChart from "../components/dashboard/InteractiveChart";
-import WeeklySummary from "../components/dashboard/WeeklySummary";
-import SimpleAdvancedToggle from "../components/ui/SimpleAdvancedToggle";
-import DashboardWidget from "../components/dashboard/DashboardWidget";
+import StatsCard from "@/components/dashboard/StatsCard";
+import RecentProperties from "@/components/dashboard/RecentProperties";
+import InvestmentOverview from "@/components/dashboard/InvestmentOverview";
+import InvestmentJourneyWidget from "@/components/dashboard/InvestmentJourneyWidget";
+import InteractiveChart from "@/components/dashboard/InteractiveChart";
+import WeeklySummary from "@/components/dashboard/WeeklySummary";
+import SimpleAdvancedToggle from "@/components/ui/SimpleAdvancedToggle";
+import DashboardWidget from "@/components/dashboard/DashboardWidget";
 
 const initialWidgetsConfig = [
   { id: 'stats', component: StatsCard },

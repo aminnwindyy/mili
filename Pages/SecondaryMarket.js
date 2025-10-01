@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Modal from "@/components/ui/Modal";
-import {
-  TrendingUp,
+import { 
+  TrendingUp, 
   TrendingDown,
   Filter,
   MapPin,
@@ -27,6 +27,135 @@ import {
 const currency = (n) => (n || 0).toLocaleString("fa-IR");
 const pct = (n) => `${(n || 0).toFixed(1)}%`;
 const truncate = (s, n = 28) => (s?.length > n ? s.slice(0, n) + "…" : s);
+
+// market feeds (mock-friendly)
+const useTicker = () => {
+  const [data, setData] = useState({ last: 0, change24h: 0, high24h: 0, low24h: 0 });
+  useEffect(() => {
+    const load = () => fetch('/api/secondary-market/ticker').then(r => r.json()).then(setData).catch(() => {});
+    load();
+    const t = setInterval(load, 5000);
+    return () => clearInterval(t);
+  }, []);
+  return data;
+};
+
+const useOrderbook = () => {
+  const [book, setBook] = useState({ bids: [], asks: [], mid: 0 });
+  useEffect(() => {
+    const load = () => fetch('/api/secondary-market/orderbook').then(r => r.json()).then(setBook).catch(() => {});
+    load();
+    const t = setInterval(load, 4000);
+    return () => clearInterval(t);
+  }, []);
+  return book;
+};
+
+const useTrades = () => {
+  const [trades, setTrades] = useState([]);
+  useEffect(() => {
+    const load = () => fetch('/api/secondary-market/trades').then(r => r.json()).then(d => setTrades(d.data || [])).catch(() => {});
+    load();
+    const t = setInterval(load, 4000);
+    return () => clearInterval(t);
+  }, []);
+  return trades;
+};
+
+// Orderbook component
+const OrderBook = ({ book }) => {
+  const asks = (book.asks || []).slice(0, 10);
+  const bids = (book.bids || []).slice(0, 10);
+  return (
+    <Card className="border-0 shadow-md">
+      <CardHeader className="pb-2"><CardTitle className="text-slate-900 text-base">دفتر سفارشات</CardTitle></CardHeader>
+      <CardContent>
+        <div className="grid md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <div className="flex items-center justify-between text-slate-500 mb-2">
+              <span>قیمت (ریال)</span><span>حجم</span>
+            </div>
+            <div className="space-y-1">
+              {asks.map((a, i) => (
+                <div key={`a-${i}`} className="flex items-center justify-between bg-red-50/60 rounded p-2">
+                  <span className="text-red-600 font-semibold">{currency(a.price)}</span>
+                  <span className="text-slate-700">{currency(a.size)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-between text-slate-500 mb-2">
+              <span>قیمت (ریال)</span><span>حجم</span>
+            </div>
+            <div className="space-y-1">
+              {bids.map((b, i) => (
+                <div key={`b-${i}`} className="flex items-center justify-between bg-emerald-50/70 rounded p-2">
+                  <span className="text-emerald-600 font-semibold">{currency(b.price)}</span>
+                  <span className="text-slate-700">{currency(b.size)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Trades ticker
+const TradesTicker = ({ trades }) => (
+  <Card className="border-0 shadow-md">
+    <CardHeader className="pb-2"><CardTitle className="text-slate-900 text-base">معاملات اخیر</CardTitle></CardHeader>
+    <CardContent>
+      <div className="grid grid-cols-3 text-xs text-slate-500 mb-2"><span>قیمت</span><span>حجم</span><span>زمان</span></div>
+      <div className="space-y-1 max-h-64 overflow-y-auto">
+        {trades.map((t) => (
+          <div key={t.id} className="grid grid-cols-3 text-sm items-center bg-white rounded border p-2">
+            <span className={t.side === 'buy' ? 'text-emerald-600 font-medium' : 'text-red-600 font-medium'}>{currency(t.price)}</span>
+            <span className="text-slate-700">{currency(t.size)}</span>
+            <span className="text-slate-500">{new Date(t.time).toLocaleTimeString('fa-IR')}</span>
+          </div>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+);
+
+// Order form with fee preview
+const OrderForm = () => {
+  const [side, setSide] = useState('sell');
+  const [qty, setQty] = useState('');
+  const [price, setPrice] = useState('');
+  const feePct = 0.002; // 0.2%
+  const total = (Number(qty) || 0) * (Number(price) || 0);
+  const fee = total * feePct;
+  return (
+    <Card className="border-0 shadow-md">
+      <CardHeader className="pb-2"><CardTitle className="text-slate-900 text-base">ثبت سفارش</CardTitle></CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex gap-2">
+          <Button size="sm" variant={side === 'buy' ? 'default' : 'outline'} onClick={() => setSide('buy')} aria-pressed={side==='buy'}>خرید</Button>
+          <Button size="sm" variant={side === 'sell' ? 'default' : 'outline'} onClick={() => setSide('sell')} aria-pressed={side==='sell'}>فروش</Button>
+        </div>
+        <div>
+          <label className="text-sm text-slate-600 mb-1 block">تعداد</label>
+          <Input inputMode="numeric" placeholder="مثلا 5" value={qty} onChange={(e) => setQty(e.target.value)} />
+        </div>
+        <div>
+          <label className="text-sm text-slate-600 mb-1 block">قیمت هر توکن (ریال)</label>
+          <Input inputMode="numeric" placeholder="مثلا 50000000" value={price} onChange={(e) => setPrice(e.target.value)} />
+        </div>
+        <div className="bg-emerald-50 rounded-xl p-3 text-sm border border-emerald-100">
+          <div className="flex items-center gap-2 text-slate-700"><Fuel className="w-4 h-4 text-emerald-600" /> پیش‌نمایش کارمزد</div>
+          <div className="flex items-center justify-between mt-2"><span>مبلغ کل</span><span className="font-semibold">{currency(total)} ریال</span></div>
+          <div className="flex items-center justify-between"><span>کارمزد (۰.۲٪)</span><span className="font-semibold">{currency(Math.floor(fee))} ریال</span></div>
+        </div>
+        <Button className="w-full bg-gradient-to-l from-blue-600 to-blue-700" disabled={!qty || !price}>ارسال سفارش</Button>
+      </CardContent>
+    </Card>
+  );
+};
 
 // demo data
 const useHoldings = () => {
@@ -92,10 +221,10 @@ const HoldingsGrid = ({ data, onSell }) => (
         <div className="relative">
           <img src={h.image} alt={h.title} className="w-full h-40 object-cover" />
           <Badge className="absolute top-3 right-3 bg-emerald-600 text-white">دارایی شما</Badge>
-        </div>
+          </div>
         <CardContent className="p-5">
           <div className="flex items-start justify-between">
-            <div>
+              <div>
               <h3 className="font-bold text-slate-900">{truncate(h.title)}</h3>
               <div className="text-sm text-slate-500 flex items-center gap-1 mt-1">
                 <MapPin className="w-3.5 h-3.5" /> {h.location}
@@ -111,30 +240,30 @@ const HoldingsGrid = ({ data, onSell }) => (
             <div className="bg-slate-50 rounded-xl p-3">
               <div className="text-slate-500">تعداد</div>
               <div className="font-bold text-slate-900">{currency(h.qty)}</div>
-            </div>
+              </div>
             <div className="bg-slate-50 rounded-xl p-3">
               <div className="text-slate-500">قیمت</div>
               <div className="font-bold text-slate-900">{currency(h.price)} ریال</div>
-            </div>
+              </div>
             <div className="bg-slate-50 rounded-xl p-3">
               <div className="text-slate-500">ارزش</div>
               <div className="font-bold text-slate-900">{currency(h.qty * h.price)} ریال</div>
-            </div>
           </div>
+        </div>
 
           <div className="flex items-center justify-between mt-5">
             <Button className="bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800" onClick={() => onSell(h)} aria-label={`فروش ${h.title}`}>
               فروش
-            </Button>
+              </Button>
             <div className="flex items-center gap-2 text-xs text-slate-500">
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
               امن
             </div>
-          </div>
-        </CardContent>
-      </Card>
+            </div>
+          </CardContent>
+        </Card>
     ))}
-  </div>
+              </div>
 );
 
 const ListingsGrid = ({ data, page, perPage, onPage, filters }) => {
@@ -154,28 +283,28 @@ const ListingsGrid = ({ data, page, perPage, onPage, filters }) => {
   const slice = filtered.slice(start, start + perPage);
 
   return (
-    <div>
+              <div>
       <div className="grid md:grid-cols-3 gap-6">
         {slice.map((l) => (
           <Card key={l.id} className="border-0 shadow-lg hover:shadow-2xl transition-all">
             <div className="relative">
               <img src={l.image} alt={l.title} className="w-full h-40 object-cover" />
               <Badge className="absolute top-3 right-3 bg-blue-600 text-white">آگهی فروش</Badge>
-            </div>
+              </div>
             <CardContent className="p-5">
               <div className="flex items-start justify-between">
-                <div>
+              <div>
                   <h3 className="font-bold text-slate-900">{truncate(l.title)}</h3>
                   <div className="text-sm text-slate-500 flex items-center gap-1 mt-1">
                     <MapPin className="w-3.5 h-3.5" />
                     {l.location}
                   </div>
-                </div>
+              </div>
                 <div className="text-right">
                   <div className="text-sm text-slate-500">بازدهی</div>
                   <div className={l.yield >= 0 ? "font-semibold text-emerald-600" : "font-semibold text-red-600"}>
                     {pct(l.yield)}
-                  </div>
+                    </div>
                 </div>
               </div>
 
@@ -187,7 +316,7 @@ const ListingsGrid = ({ data, page, perPage, onPage, filters }) => {
                 <div className="bg-slate-50 rounded-xl p-3">
                   <div className="text-slate-500">قیمت</div>
                   <div className="font-bold text-slate-900">{currency(l.price)} ریال</div>
-                </div>
+                    </div>
                 <div className="bg-slate-50 rounded-xl p-3">
                   <div className="text-slate-500">فروشنده</div>
                   <div className="font-bold text-slate-900">{l.seller}</div>
@@ -206,7 +335,7 @@ const ListingsGrid = ({ data, page, perPage, onPage, filters }) => {
                 <Button className="bg-gradient-to-l from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800">
                   خرید
                 </Button>
-              </div>
+                </div>
             </CardContent>
           </Card>
         ))}
@@ -246,12 +375,12 @@ const ChainPreview = ({ estGas = 0.00042, network = "Polygon" }) => (
         <div className="text-slate-500">کارمزد سیستم</div>
         <div className="font-semibold text-slate-900">۰.۲%</div>
       </div>
-    </div>
+                        </div>
     <div className="flex items-start gap-2 text-amber-700 bg-amber-50 border border-amber-100 rounded-xl p-3 mt-3 text-xs">
       <AlertTriangle className="w-4 h-4 mt-0.5" />
       <span>مبالغ و کارمزدها بسته به شرایط شبکه تغییر می‌کنند.</span>
-    </div>
-  </div>
+                        </div>
+                      </div>
 );
 
 const SellModal = ({ open, onClose, holding, onSubmit }) => {
@@ -283,21 +412,21 @@ const SellModal = ({ open, onClose, holding, onSubmit }) => {
               <div className="text-xs text-slate-500 flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5" /> {holding?.location}
               </div>
-            </div>
-          </div>
-
+                      </div>
+                    </div>
+                    
           <div className="grid md:grid-cols-3 gap-3">
-            <div>
+                      <div>
               <label className="text-sm text-slate-600 mb-1 block">تعداد فروش</label>
               <Input inputMode="numeric" placeholder="مثلا 5" value={form.qty} onChange={(e) => setForm((f) => ({ ...f, qty: e.target.value }))} aria-label="تعداد فروش" />
               <div className="text-xs text-slate-500 mt-1">حداکثر: {currency(holding?.qty)} توکن</div>
-            </div>
-            <div>
+                      </div>
+                      <div>
               <label className="text-sm text-slate-600 mb-1 block">قیمت هر توکن (ریال)</label>
               <Input inputMode="numeric" placeholder="مثلا 50000000" value={form.price} onChange={(e) => setForm((f) => ({ ...f, price: e.target.value }))} aria-label="قیمت هر توکن" />
               <div className="text-xs text-slate-500 mt-1">قیمت فعلی: {currency(holding?.price)} ریال</div>
-            </div>
-            <div>
+                      </div>
+                      <div>
               <label className="text-sm text-slate-600 mb-1 block">مدت نمایش (روز)</label>
               <select
                 value={form.duration}
@@ -310,9 +439,9 @@ const SellModal = ({ open, onClose, holding, onSubmit }) => {
                 <option value="14">۱۴ روز</option>
                 <option value="30">۳۰ روز</option>
               </select>
-            </div>
-          </div>
-
+                      </div>
+                    </div>
+                    
           <ChainPreview />
 
           <div className="flex items-center justify-between">
@@ -344,7 +473,7 @@ const SellModal = ({ open, onClose, holding, onSubmit }) => {
             <Button variant="outline" onClick={() => setStep(1)}>بازگشت</Button>
             <Button className="bg-gradient-to-l from-blue-600 to-blue-700" onClick={() => onSubmit?.({ ...form, qty: Number(form.qty), price: Number(form.price) })}>
               تایید و انتشار
-            </Button>
+                      </Button>
           </div>
         </div>
       )}
@@ -355,6 +484,9 @@ const SellModal = ({ open, onClose, holding, onSubmit }) => {
 export default function SecondaryMarket() {
   const holdings = useHoldings();
   const listings = useListings();
+  const ticker = useTicker();
+  const book = useOrderbook();
+  const trades = useTrades();
 
   const [filters, setFilters] = useState({ q: "", location: "", minYield: "", maxPrice: "" });
   const [page, setPage] = useState(1);
@@ -390,11 +522,11 @@ export default function SecondaryMarket() {
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" aria-label="راهنما">
               <Info className="w-4 h-4 ml-1" /> راهنما
-            </Button>
+                      </Button>
             <Button size="sm" className="bg-gradient-to-l from-emerald-600 to-emerald-700">
               <Wallet className="w-4 h-4 ml-1" /> اتصال کیف‌پول
-            </Button>
-          </div>
+                      </Button>
+                    </div>
         </div>
 
         <Tabs defaultValue="market" className="mb-6">
@@ -405,27 +537,37 @@ export default function SecondaryMarket() {
 
           <TabsContent value="market" className="mt-5">
             <FiltersBar filters={filters} onChange={onFilterChange} onReset={onResetFilters} />
-
-            <div className="mb-6">
-              <Card className="border-0 shadow-md">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-slate-900 text-base flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-blue-600" /> نقشه فرصت‌ها (نمایش سریع)
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="rounded-xl overflow-hidden border">
-                    <img
-                      src="https://maps.googleapis.com/maps/api/staticmap?center=Tehran,Iran&zoom=11&size=1200x300&maptype=roadmap&markers=color:green|Tehran&key=AIzaSyD-FAKE-KEY"
-                      alt="نقشه تهران - نمای کلی"
-                      className="w-full h-48 object-cover"
-                    />
-                  </div>
-                  <div className="text-xs text-slate-500 mt-2">نقشه نمایشی است. برای موقعیت دقیق هر ملک روی دکمه «نقشه» در کارت کلیک کنید.</div>
-                </CardContent>
-              </Card>
+            {/* Market layout: orderbook + trades + orderform */}
+            <div className="grid lg:grid-cols-3 gap-6 mb-6">
+              <div className="lg:col-span-2 space-y-6">
+                {/* KPI bar */}
+                <Card className="border-0 shadow-md">
+                  <CardContent className="p-4 grid grid-cols-3 gap-3 text-sm">
+                    <div>
+                      <div className="text-slate-500">آخرین قیمت</div>
+                      <div className="font-bold text-slate-900">{currency(ticker.last)} ریال</div>
+                    </div>
+                    <div>
+                      <div className="text-slate-500">تغییر ۲۴س</div>
+                      <div className={ticker.change24h >= 0 ? 'font-bold text-emerald-600' : 'font-bold text-red-600'}>
+                        {ticker.change24h >= 0 ? '+' : ''}{pct(ticker.change24h)}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-slate-500">بالا/پایین ۲۴س</div>
+                      <div className="font-medium text-slate-700">{currency(ticker.high24h)} / {currency(ticker.low24h)}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+                <OrderBook book={book} />
+                <TradesTicker trades={trades} />
+              </div>
+              <div className="space-y-6">
+                <OrderForm />
+              </div>
             </div>
 
+            {/* Marketplace listings */}
             <ListingsGrid data={listings} page={page} perPage={6} onPage={setPage} filters={filters} />
           </TabsContent>
 

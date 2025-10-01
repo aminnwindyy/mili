@@ -81,7 +81,16 @@ export const Sidebar = ({ children, className = '' }) => {
   }
 
   return (
-    <aside className={`w-72 flex-shrink-0 flex flex-col bg-white ${className}`}>
+    <aside
+      className={`w-72 flex-shrink-0 flex flex-col ${className}`}
+      style={{
+        background: 'linear-gradient(135deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.35) 100%)',
+        backdropFilter: 'saturate(180%) blur(16px)',
+        WebkitBackdropFilter: 'saturate(180%) blur(16px)',
+        borderRight: '1px solid rgba(255,255,255,0.4)',
+        boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
+      }}
+    >
       {children}
     </aside>
   );
@@ -100,7 +109,14 @@ export const SidebarTrigger = ({ className = '', ...props }) => {
 
 // Sub-components for structure
 export const SidebarHeader = ({ children, className = '' }) => (
-  <header className={`p-4 border-b ${className}`}>{children}</header>
+  <header
+    className={`p-4 ${className}`}
+    style={{
+      borderBottom: '1px solid rgba(255,255,255,0.35)',
+    }}
+  >
+    {children}
+  </header>
 );
 
 export const SidebarContent = ({ children, className = '' }) => (
@@ -108,7 +124,14 @@ export const SidebarContent = ({ children, className = '' }) => (
 );
 
 export const SidebarFooter = ({ children, className = '' }) => (
-  <footer className={`p-4 border-t ${className}`}>{children}</footer>
+  <footer
+    className={`p-4 ${className}`}
+    style={{
+      borderTop: '1px solid rgba(255,255,255,0.35)',
+    }}
+  >
+    {children}
+  </footer>
 );
 
 export const SidebarGroup = ({ children, className = '' }) => (

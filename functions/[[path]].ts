@@ -93,6 +93,42 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         return new Response(JSON.stringify({ data: trefs }), { status: 200, headers: corsHeaders(request) });
       }
 
+      // Secondary market endpoints
+      if (url.pathname === '/api/secondary-market/ticker') {
+        const payload = {
+          last: 60_000_000,
+          change24h: 1.8,
+          high24h: 61_200_000,
+          low24h: 58_900_000,
+          volume24h: 1_250_000_000,
+        };
+        return new Response(JSON.stringify(payload), { status: 200, headers: corsHeaders(request) });
+      }
+      if (url.pathname === '/api/secondary-market/orderbook') {
+        const mid = 60_000_000;
+        const gen = (n, side) => Array.from({ length: n }).map((_, i) => ({
+          price: side === 'ask' ? mid + (i + 1) * 200_000 : mid - (i + 1) * 200_000,
+          size: Math.floor(5 + Math.random() * 120),
+        }));
+        const book = {
+          bids: gen(10, 'bid'),
+          asks: gen(10, 'ask'),
+          mid,
+        };
+        return new Response(JSON.stringify(book), { status: 200, headers: corsHeaders(request) });
+      }
+      if (url.pathname === '/api/secondary-market/trades') {
+        const now = Date.now();
+        const trades = Array.from({ length: 12 }).map((_, i) => ({
+          id: `t-${i}`,
+          side: Math.random() > 0.5 ? 'buy' : 'sell',
+          price: 59_800_000 + Math.floor(Math.random() * 500_000),
+          size: Math.floor(1 + Math.random() * 40),
+          time: new Date(now - i * 60_000).toISOString(),
+        }));
+        return new Response(JSON.stringify({ data: trades }), { status: 200, headers: corsHeaders(request) });
+      }
+
       // Secondary market mocks
       if (url.pathname === '/api/secondary-market/orderbook') {
         const mid = 50_000_000; // 50M ریال به عنوان میانگین قیمت هر توکن

@@ -82,4 +82,47 @@
       }
     },
     "required": []
-  }
+  ,
+  "items": [
+    {
+      "id": "tref-1",
+      "name": "صندوق ملکی مسکونی تهران",
+      "description": "تنوعی از املاک مسکونی مناطق 1 تا 5 تهران",
+      "fund_type": "مسکونی",
+      "target_amount": 80000000000,
+      "collected_amount": 52000000000,
+      "token_price": 1000000,
+      "total_units": 80000,
+      "available_units": 28000,
+      "expected_annual_yield": 18.2,
+      "management_fee": 1.5,
+      "properties": [
+        { "property_id": "prop-1", "allocation_percentage": 35 },
+        { "property_id": "prop-3", "allocation_percentage": 20 }
+      ],
+      "manager_name": "ملک‌چین کپیتال",
+      "status": "فعال",
+      "inception_date": "2024-01-10"
+    },
+    {
+      "id": "tref-2",
+      "name": "صندوق تجاری کلانشهر",
+      "description": "تمرکز بر پروژه‌های تجاری در مراکز استان‌ها",
+      "fund_type": "تجاری",
+      "target_amount": 120000000000,
+      "collected_amount": 82000000000,
+      "token_price": 1500000,
+      "total_units": 80000,
+      "available_units": 34000,
+      "expected_annual_yield": 20.1,
+      "management_fee": 1.8,
+      "properties": [
+        { "property_id": "prop-2", "allocation_percentage": 40 },
+        { "property_id": "prop-4", "allocation_percentage": 25 }
+      ],
+      "manager_name": "سرمایه‌گذاری آتی",
+      "status": "جذب_سرمایه",
+      "inception_date": "2024-06-01"
+    }
+  ]
+}

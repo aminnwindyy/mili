@@ -18,7 +18,7 @@ import {
   User,
   Phone
 } from 'lucide-react';
-import { formatCurrency } from '../ui/formatters';
+import { formatCurrency } from '@/components/ui/formatters';
 import RelatedProperties from './RelatedProperties';
 
 export default function PropertyQuickView({ property, onClose, onInvest }) {

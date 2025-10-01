@@ -11,7 +11,7 @@ import {
   Download,
   Share2
 } from 'lucide-react';
-import { formatCurrency } from '../ui/formatters';
+import { formatCurrency } from '@/components/ui/formatters';
 
 export default function WeeklySummary({ investments, properties, userEmail }) {
   const [weeklyData, setWeeklyData] = useState({

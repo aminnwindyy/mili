@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Building2, MapPin, TrendingUp, Eye } from 'lucide-react';
-import { formatCurrency } from '../ui/formatters';
+import { formatCurrency } from '@/components/ui/formatters';
 
 export default function RelatedProperties({ currentProperty, onPropertySelect }) {
   const [relatedProperties, setRelatedProperties] = useState([]);

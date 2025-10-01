@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Building2, MapPin, TrendingUp, Eye, Heart, Coins } from 'lucide-react';
 import { motion } from 'framer-motion';
-import ContextMenu from '../ui/ContextMenu';
-import { useDragDropCart } from '../ui/DragDropProvider';
+import ContextMenu from '@/components/ui/ContextMenu';
+import { useDragDropCart } from '@/components/ui/DragDropProvider';
 
 export default function PropertyCard({ property, onDoubleClick }) {
   const [contextMenu, setContextMenu] = useState({ isVisible: false, x: 0, y: 0 });

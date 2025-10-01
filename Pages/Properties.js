@@ -18,16 +18,16 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import PropertyCard from "../components/properties/PropertyCard";
-import PropertyFilters from "../components/properties/PropertyFilters";
-import Modal from "../components/ui/Modal";
-import PropertyQuickView from "../components/properties/PropertyQuickView";
-import DragDropProvider from "../components/ui/DragDropProvider";
-import InvestmentCart from "../components/ui/InvestmentCart";
-import { useSmartCache } from "../components/ui/SmartCache";
-import VoiceSearchButton from "../components/properties/VoiceSearchButton";
-import StickyMobileActions from "../components/ui/StickyMobileActions";
-import { formatCurrency } from "../components/ui/formatters";
+import PropertyCard from "@/components/properties/PropertyCard";
+import PropertyFilters from "@/components/properties/PropertyFilters";
+import Modal from "@/components/ui/Modal";
+import PropertyQuickView from "@/components/properties/PropertyQuickView";
+import DragDropProvider from "@/components/ui/DragDropProvider";
+import InvestmentCart from "@/components/ui/InvestmentCart";
+import { useSmartCache } from "@/components/ui/SmartCache";
+import VoiceSearchButton from "@/components/properties/VoiceSearchButton";
+import StickyMobileActions from "@/components/ui/StickyMobileActions";
+import { formatCurrency } from "@/components/ui/formatters";
 
 function PropertiesContent() {
   const { data: properties, loading: isLoading, invalidate } = useSmartCache(

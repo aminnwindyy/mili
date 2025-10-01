@@ -1,7 +1,6 @@
+name = "melkchainnn"
 compatibility_date = "2025-01-01"
-
-[pages]
-build_output_dir = "dist"
+pages_build_output_dir = "dist"
 
 [vars]
 # Set this to your backend API origin (e.g., https://api.example.com)

@@ -4,6 +4,8 @@
 // If you add new areas, extend the mocks map below.
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import propertyJson from '../Entites/Property.json';
+import investmentJson from '../Entites/Investment.json';
+import userJson from '../Entites/User.json';
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env, next } = context;
@@ -37,6 +39,18 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       // Route: /api/properties
       if (url.pathname === '/api/properties') {
         const body = JSON.stringify({ data: propertyJson.items || [] });
+        return new Response(body, { status: 200, headers: corsHeaders(request) });
+      }
+
+      // Route: /api/investments
+      if (url.pathname === '/api/investments') {
+        const body = JSON.stringify({ data: investmentJson.items || [] });
+        return new Response(body, { status: 200, headers: corsHeaders(request) });
+      }
+
+      // Route: /api/user-management/profile
+      if (url.pathname === '/api/user-management/profile') {
+        const body = JSON.stringify(userJson.me || null);
         return new Response(body, { status: 200, headers: corsHeaders(request) });
       }
 

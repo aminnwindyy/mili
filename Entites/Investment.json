@@ -48,4 +48,29 @@
       "tokens_purchased",
       "total_amount"
     ]
-  }
+  ,
+  "items": [
+    {
+      "id": "inv-1",
+      "property_id": "prop-1",
+      "investor_email": "demo@example.com",
+      "tokens_purchased": 10,
+      "total_amount": 500000000,
+      "purchase_date": "2025-09-15",
+      "status": "فعال",
+      "current_value": 575000000,
+      "profit_loss": 75000000
+    },
+    {
+      "id": "inv-2",
+      "property_id": "prop-2",
+      "investor_email": "demo@example.com",
+      "tokens_purchased": 5,
+      "total_amount": 300000000,
+      "purchase_date": "2025-08-01",
+      "status": "فعال",
+      "current_value": 330000000,
+      "profit_loss": 30000000
+    }
+  ]
+} 

@@ -36,9 +36,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { User as UserEntity } from "@/entities/User";
-import FloatingCalculator from "./components/ui/FloatingCalculator";
-import SmartBackButton from "./components/ui/SmartBackButton";
-import HelpTooltips from "./components/ui/HelpTooltips";
+import FloatingCalculator from "@/components/ui/FloatingCalculator";
+import SmartBackButton from "@/components/ui/SmartBackButton";
+import HelpTooltips from "@/components/ui/HelpTooltips";
 const HELP_ENABLED = false;
 
 const navigationItems = [

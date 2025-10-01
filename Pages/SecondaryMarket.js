@@ -22,12 +22,25 @@ import {
 export default function SecondaryMarket() {
   const [listings, setListings] = useState([]);
   const [myBids, setMyBids] = useState([]);
+  const [orderbook, setOrderbook] = useState({ bids: [], asks: [], mid: 0 });
+  const [trades, setTrades] = useState([]);
+  const [ticker, setTicker] = useState({ last: 0, change24h: 0, high24h: 0, low24h: 0, volume24h: 0 });
+  const [side, setSide] = useState('buy');
+  const [price, setPrice] = useState('');
+  const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     loadMarketData();
+    // Poll mock endpoints every 5s
+    const interval = setInterval(() => {
+      fetch('/api/secondary-market/orderbook').then(r => r.json()).then(setOrderbook).catch(() => {});
+      fetch('/api/secondary-market/trades').then(r => r.json()).then(d => setTrades(d.data || [])).catch(() => {});
+      fetch('/api/secondary-market/ticker').then(r => r.json()).then(setTicker).catch(() => {});
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadMarketData = async () => {
@@ -57,10 +70,75 @@ export default function SecondaryMarket() {
       
       setListings(mockListings);
       setMyBids(bidsData.filter(bid => bid.bidder_email === userData.email));
+      // First fetch of mock feeds
+      const [ob, tr, tk] = await Promise.all([
+        fetch('/api/secondary-market/orderbook').then(r => r.json()).catch(() => ({ bids: [], asks: [], mid: 0 })),
+        fetch('/api/secondary-market/trades').then(r => r.json()).then(d => setTrades(d.data || [])).catch(() => ({ data: [] })),
+        fetch('/api/secondary-market/ticker').then(r => r.json()).then(setTicker).catch(() => ({ last: 0, change24h: 0, high24h: 0, low24h: 0, volume24h: 0 })),
+      ]);
+      setOrderbook(ob);
+      setTrades(tr.data || []);
+      setTicker(tk);
     } catch (error) {
       console.error("Error loading market data:", error);
     }
     setIsLoading(false);
+  };
+
+  // --- Binance-like Order Book (mock) ---
+  const seedOrderBook = () => {
+    const mid = 60_000_000; // میانگین قیمت توکن (ریال)
+    const genLevels = (count, side) => {
+      const levels = [];
+      for (let i = 0; i < count; i++) {
+        const price = side === 'ask' 
+          ? mid + (i + 1) * 200_000 + Math.floor(Math.random() * 50_000)
+          : mid - (i + 1) * 200_000 - Math.floor(Math.random() * 50_000);
+        const size = Math.floor(5 + Math.random() * 120);
+        levels.push({ price, size });
+      }
+      return levels;
+    };
+    setOrderBook({
+      asks: genLevels(12, 'ask').sort((a,b) => a.price - b.price),
+      bids: genLevels(12, 'bid').sort((a,b) => b.price - a.price),
+    });
+    setTrades([
+      { id: 't1', side: 'buy', price: mid + 120_000, size: 12, time: new Date() },
+      { id: 't2', side: 'sell', price: mid - 80_000, size: 20, time: new Date(Date.now()-30_000) },
+    ]);
+  };
+
+  const tickOrderBook = () => {
+    setOrderBook(prev => {
+      if (!prev || !prev.bids || !prev.asks) return prev;
+      // Randomly tweak a level on each side
+      const bids = [...prev.bids];
+      const asks = [...prev.asks];
+      const bi = Math.floor(Math.random() * bids.length);
+      const ai = Math.floor(Math.random() * asks.length);
+      bids[bi] = { ...bids[bi], size: Math.max(1, bids[bi].size + Math.floor((Math.random()-0.5) * 10)) };
+      asks[ai] = { ...asks[ai], size: Math.max(1, asks[ai].size + Math.floor((Math.random()-0.5) * 10)) };
+      // Occasionally shift mid by inserting/removing a level
+      if (Math.random() > 0.7) {
+        bids.pop();
+        bids.unshift({ price: bids[0].price + 50_000, size: Math.floor(5 + Math.random()*80) });
+      }
+      if (Math.random() > 0.7) {
+        asks.pop();
+        asks.unshift({ price: asks[0].price - 50_000, size: Math.floor(5 + Math.random()*80) });
+      }
+      return { bids, asks };
+    });
+    setTrades(prev => {
+      const side = Math.random() > 0.5 ? 'buy' : 'sell';
+      const bestBid = orderBook.bids[0]?.price || 59_800_000;
+      const bestAsk = orderBook.asks[0]?.price || 60_200_000;
+      const price = side === 'buy' ? bestAsk : bestBid;
+      const size = Math.floor(1 + Math.random()*40);
+      const t = { id: String(Date.now()), side, price, size, time: new Date() };
+      return [t, ...(prev||[])].slice(0, 30);
+    });
   };
 
   const filteredListings = listings.filter(listing =>
@@ -97,41 +175,22 @@ export default function SecondaryMarket() {
             <h1 className="text-3xl font-bold text-slate-900 mb-2">بازار ثانویه</h1>
             <p className="text-slate-600">خرید و فروش توکن‌های املاک با سایر سرمایه‌گذاران</p>
           </div>
-        </div>
-
-        {/* Market Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card className="shadow-lg border-0">
-            <CardContent className="p-6 text-center">
-              <ShoppingCart className="w-8 h-8 mx-auto mb-2 text-blue-600" />
-              <div className="text-2xl font-bold text-slate-900">{listings.length}</div>
-              <div className="text-sm text-slate-600">آگهی فعال</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="shadow-lg border-0">
-            <CardContent className="p-6 text-center">
-              <DollarSign className="w-8 h-8 mx-auto mb-2 text-green-600" />
-              <div className="text-2xl font-bold text-slate-900">۲.۱ میلیارد</div>
-              <div className="text-sm text-slate-600">حجم معاملات</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="shadow-lg border-0">
-            <CardContent className="p-6 text-center">
-              <TrendingUp className="w-8 h-8 mx-auto mb-2 text-emerald-600" />
-              <div className="text-2xl font-bold text-slate-900">+۵.۲%</div>
-              <div className="text-sm text-slate-600">رشد قیمت</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="shadow-lg border-0">
-            <CardContent className="p-6 text-center">
-              <Clock className="w-8 h-8 mx-auto mb-2 text-purple-600" />
-              <div className="text-2xl font-bold text-slate-900">۲.۳ ساعت</div>
-              <div className="text-sm text-slate-600">متوسط زمان معامله</div>
-            </CardContent>
-          </Card>
+          <div className="text-left bg-white rounded-xl shadow px-4 py-2 border">
+            <div className="flex gap-4 items-center">
+              <div>
+                <div className="text-xs text-slate-500">آخرین قیمت</div>
+                <div className="font-bold text-slate-900">{(ticker.last / 1_000_000).toFixed(2)} م ریال</div>
+              </div>
+              <div>
+                <div className="text-xs text-slate-500">تغییر ۲۴س</div>
+                <div className={`font-bold ${ticker.change24h >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>{ticker.change24h >= 0 ? '+' : ''}{ticker.change24h}%</div>
+              </div>
+              <div className="hidden md:block">
+                <div className="text-xs text-slate-500">بالا/پایین ۲۴س</div>
+                <div className="font-medium text-slate-700">{(ticker.high24h/1_000_000).toFixed(1)} / {(ticker.low24h/1_000_000).toFixed(1)} م</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Search and Filters */}
@@ -154,6 +213,70 @@ export default function SecondaryMarket() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Market Layout: Left order form, middle orderbook, right trades (Binance-like) */}
+        <div className="grid lg:grid-cols-4 gap-6 mb-8">
+          {/* Order form */}
+          <Card className="shadow-lg border-0 lg:col-span-1">
+            <CardHeader className="pb-3"><CardTitle>سفارش</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex gap-2 mb-2">
+                <Button onClick={() => setSide('buy')} className={`flex-1 ${side==='buy' ? 'bg-emerald-600' : 'bg-slate-200 text-slate-700'}`}>خرید</Button>
+                <Button onClick={() => setSide('sell')} className={`flex-1 ${side==='sell' ? 'bg-red-600' : 'bg-slate-200 text-slate-700'}`}>فروش</Button>
+              </div>
+              <div>
+                <div className="text-xs text-slate-600 mb-1">قیمت (ریال)</div>
+                <Input value={price} onChange={e => setPrice(e.target.value)} placeholder={(orderbook.mid||0).toString()} />
+              </div>
+              <div>
+                <div className="text-xs text-slate-600 mb-1">تعداد توکن</div>
+                <Input value={amount} onChange={e => setAmount(e.target.value)} placeholder="0" />
+              </div>
+              <Button className={`${side==='buy' ? 'bg-emerald-600' : 'bg-red-600'} w-full`}>ثبت سفارش {side==='buy' ? 'خرید' : 'فروش'}</Button>
+            </CardContent>
+          </Card>
+          {/* Orderbook */}
+          <Card className="shadow-lg border-0 lg:col-span-2 overflow-hidden">
+            <CardHeader className="pb-3"><CardTitle>دفتر سفارشات</CardTitle></CardHeader>
+            <CardContent className="grid grid-cols-2 gap-4 p-0">
+              <div className="p-4">
+                <div className="text-xs text-slate-500 mb-2">فروشندگان (Ask)</div>
+                <div className="space-y-1 max-h-80 overflow-auto">
+                  {orderbook.asks.slice(0,15).reverse().map((l, i) => (
+                    <div key={`a-${i}`} className="flex justify-between text-sm px-2 py-1 bg-red-50/60 rounded">
+                      <span className="text-red-600">{(l.price/1_000_000).toFixed(2)}</span>
+                      <span className="text-slate-700">{l.amount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="p-4 border-r border-slate-100">
+                <div className="text-xs text-slate-500 mb-2">خریداران (Bid)</div>
+                <div className="space-y-1 max-h-80 overflow-auto">
+                  {orderbook.bids.slice(0,15).map((l, i) => (
+                    <div key={`b-${i}`} className="flex justify-between text-sm px-2 py-1 bg-emerald-50/60 rounded">
+                      <span className="text-emerald-700">{(l.price/1_000_000).toFixed(2)}</span>
+                      <span className="text-slate-700">{l.amount}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          {/* Trades */}
+          <Card className="shadow-lg border-0 lg:col-span-1">
+            <CardHeader className="pb-3"><CardTitle>معاملات اخیر</CardTitle></CardHeader>
+            <CardContent className="space-y-1 max-h-96 overflow-auto">
+              {trades.map((t) => (
+                <div key={t.id} className={`flex justify-between text-sm px-2 py-1 rounded ${t.side==='buy' ? 'bg-emerald-50/60' : 'bg-red-50/60'}`}>
+                  <span className={t.side==='buy' ? 'text-emerald-700' : 'text-red-600'}>{(t.price/1_000_000).toFixed(2)}</span>
+                  <span className="text-slate-700">{t.amount}</span>
+                  <span className="text-slate-400">{new Date(t.ts).toLocaleTimeString('fa-IR',{hour:'2-digit', minute:'2-digit'})}</span>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Market Tabs */}
         <Tabs defaultValue="listings" className="space-y-6">

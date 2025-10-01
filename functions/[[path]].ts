@@ -54,6 +54,45 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         return new Response(body, { status: 200, headers: corsHeaders(request) });
       }
 
+      // Route: /api/notifications
+      if (url.pathname === '/api/notifications') {
+        const now = new Date();
+        const sample = [
+          { _id: 'n1', title: 'خرید موفق', message: '۱۰ توکن آپارتمان ولیعصر خریداری شد', created_date: now.toISOString(), read: false },
+          { _id: 'n2', title: 'پرداخت تایید شد', message: 'مبلغ ۵۰۰,۰۰۰,۰۰۰ ریال تایید شد', created_date: new Date(now.getTime()-3600_000).toISOString(), read: true },
+        ];
+        return new Response(JSON.stringify({ data: sample }), { status: 200, headers: corsHeaders(request) });
+      }
+
+      // Route: /api/analytics/dashboard
+      if (url.pathname === '/api/analytics/dashboard') {
+        const payload = {
+          total_investment: 10000000000,
+          total_current_value: 12000000000,
+          total_profit_loss: 2000000000,
+          weekly_change_percent: 3.2,
+          monthly_change_percent: 12.5,
+        };
+        return new Response(JSON.stringify(payload), { status: 200, headers: corsHeaders(request) });
+      }
+
+      // Route: /api/wallets
+      if (url.pathname === '/api/wallets') {
+        const wallets = [
+          { id: 'wal-irt', currency: 'IRR', balance: 1500000000, available: 1200000000, locked: 300000000 },
+        ];
+        return new Response(JSON.stringify({ data: wallets }), { status: 200, headers: corsHeaders(request) });
+      }
+
+      // Route: /api/trefs (funds)
+      if (url.pathname === '/api/trefs') {
+        const trefs = [
+          { id: 'tref-1', title: 'صندوق ملکی مسکونی تهران', expected_annual_return: 18.2, aum: 50000000000, status: 'باز' },
+          { id: 'tref-2', title: 'صندوق تجاری کلانشهر', expected_annual_return: 20.1, aum: 82000000000, status: 'باز' },
+        ];
+        return new Response(JSON.stringify({ data: trefs }), { status: 200, headers: corsHeaders(request) });
+      }
+
       // Fallback mock: empty list
       return new Response(JSON.stringify({ data: [] }), { status: 200, headers: corsHeaders(request) });
     }

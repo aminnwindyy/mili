@@ -1,0 +1,25 @@
+{
+  "name": "Event",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "event_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "webinar",
+        "new_listing",
+        "announcement"
+      ]
+    }
+  },
+  "required": []
+}

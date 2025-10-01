@@ -1,0 +1,54 @@
+# Node / Vite
+node_modules/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build outputs
+/dist/
+/.vite/
+.vite-cache/
+*.local
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.code-workspace
+
+# Env / Secrets
+.env
+.env.*
+!.env.example
+wrangler.toml.local
+
+# Coverage / Tests
+coverage/
+*.lcov
+
+# Misc
+*.tsbuildinfo
+*.map
+
+# Backend
+backend/node_modules/
+backend/.env
+backend/coverage/
+backend/.nyc_output/
+backend/*.sqlite
+backend/*.db
+
+# Cloudflare
+.workers/
+.cloudflare/
+.functions-cache/
+
+# Logs
+backend/logs/
+logs/
+

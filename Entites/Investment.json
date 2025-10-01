@@ -1,0 +1,51 @@
+{
+    "name": "Investment",
+    "type": "object",
+    "properties": {
+      "property_id": {
+        "type": "string",
+        "description": "شناسه ملک"
+      },
+      "investor_email": {
+        "type": "string",
+        "description": "ایمیل سرمایه‌گذار"
+      },
+      "tokens_purchased": {
+        "type": "number",
+        "description": "تعداد توکن‌های خریداری شده"
+      },
+      "total_amount": {
+        "type": "number",
+        "description": "مبلغ کل سرمایه‌گذاری به ریال"
+      },
+      "purchase_date": {
+        "type": "string",
+        "format": "date",
+        "description": "تاریخ خرید"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "فعال",
+          "فروخته_شده",
+          "منقضی"
+        ],
+        "default": "فعال",
+        "description": "وضعیت سرمایه‌گذاری"
+      },
+      "current_value": {
+        "type": "number",
+        "description": "ارزش فعلی سرمایه‌گذاری"
+      },
+      "profit_loss": {
+        "type": "number",
+        "description": "سود یا زیان"
+      }
+    },
+    "required": [
+      "property_id",
+      "investor_email",
+      "tokens_purchased",
+      "total_amount"
+    ]
+  }

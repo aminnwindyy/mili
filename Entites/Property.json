@@ -1,0 +1,184 @@
+{
+    "name": "Property",
+    "type": "object",
+    "items": [
+      {
+        "id": "prop-1",
+        "title": "آپارتمان لوکس ولیعصر",
+        "address": "تهران، ولیعصر",
+        "property_type": "آپارتمان",
+        "total_value": 5000000000,
+        "token_price": 50000000,
+        "total_tokens": 100,
+        "available_tokens": 60,
+        "expected_annual_return": 18.5,
+        "status": "در_حال_فروش",
+        "risk_level": "medium",
+        "images": [
+          "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=800&fit=crop"
+        ]
+      },
+      {
+        "id": "prop-2",
+        "title": "مجتمع تجاری تجریش",
+        "address": "تهران، تجریش",
+        "property_type": "تجاری",
+        "total_value": 8000000000,
+        "token_price": 60000000,
+        "total_tokens": 133,
+        "available_tokens": 40,
+        "expected_annual_return": 22.3,
+        "status": "در_حال_فروش",
+        "risk_level": "high",
+        "images": [
+          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=800&fit=crop"
+        ]
+      },
+      {
+        "id": "prop-3",
+        "title": "ویلای باغ فردوس",
+        "address": "شمیرانات، باغ فردوس",
+        "property_type": "خانه",
+        "total_value": 2000000000,
+        "token_price": 25000000,
+        "total_tokens": 800,
+        "available_tokens": 600,
+        "expected_annual_return": 16.8,
+        "status": "در_حال_فروش",
+        "risk_level": "low",
+        "images": [
+          "https://images.unsplash.com/photo-1502005229762-cf1b2da7c52f?w=1200&h=800&fit=crop"
+        ]
+      },
+      {
+        "id": "prop-4",
+        "title": "برج اداری ونک",
+        "address": "تهران، ونک",
+        "property_type": "اداری",
+        "total_value": 6500000000,
+        "token_price": 40000000,
+        "total_tokens": 162,
+        "available_tokens": 120,
+        "expected_annual_return": 17.2,
+        "status": "در_حال_فروش",
+        "risk_level": "medium",
+        "images": [
+          "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=800&fit=crop"
+        ]
+      },
+      {
+        "id": "prop-5",
+        "title": "مرکز صنعتی شادآباد",
+        "address": "تهران، شادآباد",
+        "property_type": "صنعتی",
+        "total_value": 9000000000,
+        "token_price": 70000000,
+        "total_tokens": 128,
+        "available_tokens": 80,
+        "expected_annual_return": 19.0,
+        "status": "در_حال_فروش",
+        "risk_level": "high",
+        "images": [
+          "https://images.unsplash.com/photo-1582582744564-0896bf55642c?w=1200&h=800&fit=crop"
+        ]
+      }
+    ],
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "عنوان ملک"
+      },
+      "description": {
+        "type": "string",
+        "description": "توضیحات کامل ملک"
+      },
+      "address": {
+        "type": "string",
+        "description": "آدرس کامل ملک"
+      },
+      "property_type": {
+        "type": "string",
+        "enum": [
+          "آپارتمان",
+          "خانه",
+          "اداری",
+          "تجاری",
+          "صنعتی",
+          "زمین"
+        ],
+        "description": "نوع ملک"
+      },
+      "area": {
+        "type": "number",
+        "description": "متراژ بر حسب متر مربع"
+      },
+      "total_value": {
+        "type": "number",
+        "description": "ارزش کل ملک به ریال"
+      },
+      "token_price": {
+        "type": "number",
+        "description": "قیمت هر توکن به ریال"
+      },
+      "total_tokens": {
+        "type": "number",
+        "description": "تعداد کل توکن‌های قابل فروش"
+      },
+      "available_tokens": {
+        "type": "number",
+        "description": "تعداد توکن‌های موجود برای خرید"
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "در_حال_بررسی",
+          "تایید_شده",
+          "در_حال_فروش",
+          "فروخته_شده",
+          "رد_شده"
+        ],
+        "default": "در_حال_بررسی",
+        "description": "وضعیت ملک"
+      },
+      "owner_name": {
+        "type": "string",
+        "description": "نام مالک"
+      },
+      "owner_contact": {
+        "type": "string",
+        "description": "اطلاعات تماس مالک"
+      },
+      "documents": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "مستندات و اسناد ملک"
+      },
+      "images": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "تصاویر ملک"
+      },
+      "expected_annual_return": {
+        "type": "number",
+        "description": "بازدهی سالانه مورد انتظار به درصد"
+      }
+    },
+    "required": [
+      "title",
+      "address",
+      "property_type",
+      "total_value"
+    ]
+  } 

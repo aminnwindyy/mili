@@ -1,0 +1,64 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MelkChain Backend API",
+    "version": "1.0.0",
+    "description": "API documentation for MelkChain platform"
+  },
+  "servers": [
+    { "url": "/api" }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/reports/summary": {
+      "get": {
+        "summary": "Summary report",
+        "parameters": [
+          { "name": "period", "in": "query", "schema": { "type": "string", "example": "30d" } }
+        ],
+        "responses": { "200": { "description": "Summary data" } }
+      }
+    },
+    "/reports/revenue": {
+      "get": {
+        "summary": "Revenue report",
+        "responses": { "200": { "description": "Revenue series" } }
+      }
+    },
+    "/audits": {
+      "get": {
+        "summary": "List audits",
+        "responses": { "200": { "description": "List of audit logs" } }
+      },
+      "post": {
+        "summary": "Create audit log",
+        "responses": { "201": { "description": "Created" } }
+      }
+    },
+    "/audits/stats": {
+      "get": {
+        "summary": "Audit stats",
+        "responses": { "200": { "description": "Stats" } }
+      }
+    },
+    "/notifications/stream": {
+      "get": {
+        "summary": "Notifications SSE stream",
+        "responses": { "200": { "description": "Event stream" } }
+      }
+    },
+    "/audits/stream": {
+      "get": {
+        "summary": "Audits SSE stream",
+        "responses": { "200": { "description": "Event stream" } }
+      }
+    }
+  }
+}
+
+

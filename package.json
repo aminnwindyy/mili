@@ -1,0 +1,41 @@
+{
+  "name": "mili-mekl",
+  "version": "1.0.0",
+  "main": "Layout.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "cf:dev": "wrangler pages dev dist --compatibility-date=2025-01-01",
+    "cf:build": "vite build",
+    "cf:deploy": "wrangler pages deploy dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.21",
+    "lucide-react": "^0.544.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.2",
+    "recharts": "^3.2.1",
+    "tailwind-merge": "^3.3.1",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.3",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7"
+  }
+}

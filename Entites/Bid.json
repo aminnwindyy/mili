@@ -1,0 +1,49 @@
+{
+  "name": "Bid",
+  "type": "object",
+  "properties": {
+    "property_id": {
+      "type": "string",
+      "description": "شناسه ملک"
+    },
+    "bidder_email": {
+      "type": "string",
+      "description": "ایمیل پیشنهاد دهنده"
+    },
+    "seller_email": {
+      "type": "string",
+      "description": "ایمیل فروشنده"
+    },
+    "token_quantity": {
+      "type": "number",
+      "description": "تعداد توکن درخواستی"
+    },
+    "bid_price": {
+      "type": "number",
+      "description": "قیمت پیشنهادی"
+    },
+    "total_amount": {
+      "type": "number",
+      "description": "مبلغ کل پیشنهاد"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "accepted",
+        "rejected",
+        "expired"
+      ],
+      "default": "pending"
+    },
+    "expiry_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "message": {
+      "type": "string",
+      "description": "پیام برای فروشنده"
+    }
+  },
+  "required": []
+}

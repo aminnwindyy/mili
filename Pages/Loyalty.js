@@ -2,213 +2,468 @@ import React from 'react';
 
 export default function Loyalty() {
   return (
-    <div className="p-6 bg-gradient-to-bl from-slate-50 to-amber-50 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+    <div style={{ 
+      padding: '20px', 
+      backgroundColor: '#f8fafc', 
+      minHeight: '100vh', 
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      direction: 'rtl'
+    }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-            برنامه وفاداری
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <h1 style={{ 
+            fontSize: '2.5rem', 
+            fontWeight: 'bold', 
+            color: '#1e293b', 
+            marginBottom: '10px' 
+          }}>
+            برنامه وفاداری ملک‌چین
           </h1>
-          <p className="text-slate-600">فعالیت بیشتر، پاداش بیشتر!</p>
-        </div>
-
-        {/* Current Status */}
-        <div className="bg-gradient-to-bl from-yellow-400 to-yellow-600 text-white rounded-xl shadow-xl p-8 text-center mb-8">
-          <div className="text-6xl mb-4">🥇</div>
-          <h2 className="text-3xl font-bold mb-2">Gold</h2>
-          <p className="text-lg opacity-90 mb-6">
-            شما در سطح Gold هستید
+          <p style={{ fontSize: '1.1rem', color: '#64748b' }}>
+            فعالیت بیشتر، پاداش بیشتر! 🎁
           </p>
-          <div className="text-2xl font-bold mb-2">
-            7,500 امتیاز
+        </div>
+
+        {/* Current Status Card */}
+        <div style={{
+          background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+          color: 'white',
+          padding: '40px',
+          borderRadius: '20px',
+          textAlign: 'center',
+          marginBottom: '40px',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+        }}>
+          <div style={{ fontSize: '4rem', marginBottom: '20px' }}>🥇</div>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '10px' }}>
+            طلایی (Gold)
+          </h2>
+          <p style={{ fontSize: '1.2rem', opacity: 0.9, marginBottom: '30px' }}>
+            شما در سطح طلایی قرار دارید
+          </p>
+          
+          <div style={{ 
+            fontSize: '3rem', 
+            fontWeight: 'bold', 
+            marginBottom: '20px',
+            textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+          }}>
+            ۷,۵۰۰ امتیاز
           </div>
-          <div className="mt-6">
-            <div className="flex justify-between text-sm mb-2">
-              <span>تا سطح Platinum</span>
-              <span>12,500 امتیاز</span>
+          
+          {/* Progress Bar */}
+          <div style={{ marginTop: '30px' }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              fontSize: '0.9rem', 
+              marginBottom: '10px',
+              opacity: 0.9
+            }}>
+              <span>تا سطح پلاتینیوم</span>
+              <span>۱۲,۵۰۰ امتیاز باقی‌مانده</span>
             </div>
-            <div className="w-full bg-white/20 rounded-full h-3">
-              <div className="bg-white h-3 rounded-full w-1/3"></div>
+            <div style={{ 
+              width: '100%', 
+              backgroundColor: 'rgba(255,255,255,0.3)', 
+              borderRadius: '10px', 
+              height: '12px',
+              overflow: 'hidden'
+            }}>
+              <div style={{ 
+                width: '37%', 
+                backgroundColor: 'white', 
+                height: '100%', 
+                borderRadius: '10px',
+                transition: 'width 0.5s ease'
+              }}></div>
             </div>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <div className="text-4xl mb-2">🏆</div>
-            <div className="text-2xl font-bold text-slate-900">7,500</div>
-            <div className="text-sm text-slate-600">کل امتیاز</div>
+        {/* Stats Grid */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+          gap: '20px', 
+          marginBottom: '40px' 
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🏆</div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>۷,۵۰۰</div>
+            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>کل امتیاز کسب شده</div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <div className="text-4xl mb-2">⚡</div>
-            <div className="text-2xl font-bold text-slate-900">50.0میلیارد</div>
-            <div className="text-sm text-slate-600">کل سرمایه‌گذاری</div>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>💰</div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>۵۰ میلیارد</div>
+            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>کل سرمایه‌گذاری (ریال)</div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-            <div className="text-4xl mb-2">👑</div>
-            <div className="text-2xl font-bold text-slate-900">3</div>
-            <div className="text-sm text-slate-600">دعوت موفق</div>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ fontSize: '3rem', marginBottom: '10px' }}>👥</div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>۳</div>
+            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>دعوت موفق از دوستان</div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        {/* Two Column Layout */}
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
+          gap: '30px',
+          marginBottom: '40px'
+        }}>
+          
           {/* Available Rewards */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🎁</span>
-              <h3 className="text-lg font-semibold text-slate-900">پاداش‌های قابل دریافت</h3>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '10px', 
+              marginBottom: '25px' 
+            }}>
+              <span style={{ fontSize: '2rem' }}>🎁</span>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
+                پاداش‌های قابل دریافت
+              </h3>
             </div>
             
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-slate-900">کش‌بک ۱٪ خرید بعدی</h4>
-                  <p className="text-sm text-slate-600">دریافت ۱٪ کش‌بک در اولین خرید بعدی</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-amber-500">⭐</span>
-                    <span className="text-sm font-medium">500 امتیاز</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              
+              {/* Reward 1 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '20px',
+                backgroundColor: '#dcfce7',
+                borderRadius: '12px',
+                border: '1px solid #bbf7d0'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
+                    کش‌بک ۱٪ خرید بعدی
+                  </h4>
+                  <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
+                    دریافت ۱٪ کش‌بک در اولین خرید بعدی شما
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ color: '#f59e0b' }}>⭐</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
+                      ۵۰۰ امتیاز
+                    </span>
                   </div>
                 </div>
-                <button
-                  onClick={() => alert('پاداش با موفقیت دریافت شد!')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded font-medium"
+                <button 
+                  onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#16a34a',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontSize: '0.9rem'
+                  }}
                 >
                   دریافت
                 </button>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-slate-900">مشاوره رایگان</h4>
-                  <p className="text-sm text-slate-600">۱ ساعت مشاوره رایگان با کارشناسان ما</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-amber-500">⭐</span>
-                    <span className="text-sm font-medium">1000 امتیاز</span>
+              {/* Reward 2 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '20px',
+                backgroundColor: '#dcfce7',
+                borderRadius: '12px',
+                border: '1px solid #bbf7d0'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
+                    مشاوره رایگان
+                  </h4>
+                  <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
+                    ۱ ساعت مشاوره رایگان با کارشناسان ما
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ color: '#f59e0b' }}>⭐</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
+                      ۱,۰۰۰ امتیاز
+                    </span>
                   </div>
                 </div>
-                <button
-                  onClick={() => alert('پاداش با موفقیت دریافت شد!')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded font-medium"
+                <button 
+                  onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#16a34a',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontSize: '0.9rem'
+                  }}
                 >
                   دریافت
                 </button>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-slate-900">دسترسی زودهنگام</h4>
-                  <p className="text-sm text-slate-600">دسترسی ۲۴ ساعته زودتر به پروژه‌های جدید</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-amber-500">⭐</span>
-                    <span className="text-sm font-medium">2000 امتیاز</span>
+              {/* Reward 3 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '20px',
+                backgroundColor: '#dcfce7',
+                borderRadius: '12px',
+                border: '1px solid #bbf7d0'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
+                    دسترسی زودهنگام
+                  </h4>
+                  <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
+                    دسترسی ۲۴ ساعته زودتر به پروژه‌های جدید
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ color: '#f59e0b' }}>⭐</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
+                      ۲,۰۰۰ امتیاز
+                    </span>
                   </div>
                 </div>
-                <button
-                  onClick={() => alert('پاداش با موفقیت دریافت شد!')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded font-medium"
+                <button 
+                  onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
+                  style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#16a34a',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontSize: '0.9rem'
+                  }}
                 >
                   دریافت
                 </button>
               </div>
 
-              <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-slate-900">کاهش کارمزد</h4>
-                  <p className="text-sm text-slate-600">کاهش ۰.۱٪ کارمزد برای ۳ ماه</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-amber-500">⭐</span>
-                    <span className="text-sm font-medium">3000 امتیاز</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => alert('پاداش با موفقیت دریافت شد!')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded font-medium"
-                >
-                  دریافت
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg border">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-slate-900">گفت‌وگو با مدیرعامل</h4>
-                  <p className="text-sm text-slate-600">۳۰ دقیقه گفت‌وگوی اختصاصی</p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-amber-500">⭐</span>
-                    <span className="text-sm font-medium">5000 امتیاز</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => alert('پاداش با موفقیت دریافت شد!')}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded font-medium"
-                >
-                  دریافت
-                </button>
-              </div>
             </div>
           </div>
 
           {/* Current Benefits */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">✅</span>
-              <h3 className="text-lg font-semibold text-slate-900">مزایای فعلی شما</h3>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '15px',
+            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+            border: '1px solid #e2e8f0'
+          }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '10px', 
+              marginBottom: '25px' 
+            }}>
+              <span style={{ fontSize: '2rem' }}>✅</span>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
+                مزایای فعلی شما
+              </h3>
             </div>
             
-            <div className="space-y-3">
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                <span className="text-emerald-600">✅</span>
-                <span className="text-slate-700">پشتیبانی VIP</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '15px',
+                backgroundColor: '#dbeafe',
+                borderRadius: '10px'
+              }}>
+                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
+                <span style={{ color: '#1e40af', fontWeight: '500' }}>پشتیبانی VIP</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                <span className="text-emerald-600">✅</span>
-                <span className="text-slate-700">کاهش ۰.۲٪ کارمزد معاملات</span>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '15px',
+                backgroundColor: '#dbeafe',
+                borderRadius: '10px'
+              }}>
+                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
+                <span style={{ color: '#1e40af', fontWeight: '500' }}>کاهش ۰.۲٪ کارمزد معاملات</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                <span className="text-emerald-600">✅</span>
-                <span className="text-slate-700">دسترسی زودهنگام به پروژه‌ها</span>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '15px',
+                backgroundColor: '#dbeafe',
+                borderRadius: '10px'
+              }}>
+                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
+                <span style={{ color: '#1e40af', fontWeight: '500' }}>دسترسی زودهنگام به پروژه‌ها</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                <span className="text-emerald-600">✅</span>
-                <span className="text-slate-700">مشاوره ماهانه رایگان</span>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '15px',
+                backgroundColor: '#dbeafe',
+                borderRadius: '10px'
+              }}>
+                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
+                <span style={{ color: '#1e40af', fontWeight: '500' }}>مشاوره ماهانه رایگان</span>
               </div>
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
-                <span className="text-emerald-600">✅</span>
-                <span className="text-slate-700">کش‌بک ۱٪ از خریدها</span>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '15px',
+                backgroundColor: '#dbeafe',
+                borderRadius: '10px'
+              }}>
+                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
+                <span style={{ color: '#1e40af', fontWeight: '500' }}>کش‌بک ۱٪ از خریدها</span>
               </div>
+
             </div>
           </div>
+
         </div>
 
         {/* How to Earn Points */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mt-8">
-          <h3 className="text-lg font-semibold text-slate-900 mb-4">چگونه امتیاز کسب کنیم؟</h3>
+        <div style={{
+          backgroundColor: 'white',
+          padding: '30px',
+          borderRadius: '15px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+          border: '1px solid #e2e8f0'
+        }}>
+          <h3 style={{ 
+            fontSize: '1.5rem', 
+            fontWeight: 'bold', 
+            color: '#1e293b', 
+            marginBottom: '25px',
+            textAlign: 'center'
+          }}>
+            چگونه امتیاز کسب کنیم؟ 🎯
+          </h3>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-emerald-50 rounded-lg">
-              <div className="text-3xl mb-2">⚡</div>
-              <h4 className="font-semibold mb-1">سرمایه‌گذاری</h4>
-              <p className="text-sm text-slate-600">۱ امتیاز به ازای هر میلیون ریال</p>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+            gap: '20px' 
+          }}>
+            
+            <div style={{
+              textAlign: 'center',
+              padding: '25px',
+              backgroundColor: '#dcfce7',
+              borderRadius: '12px',
+              border: '1px solid #bbf7d0'
+            }}>
+              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>💰</div>
+              <h4 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#166534' }}>
+                سرمایه‌گذاری
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#15803d' }}>
+                ۱ امتیاز به ازای هر میلیون ریال
+              </p>
             </div>
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-3xl mb-2">👥</div>
-              <h4 className="font-semibold mb-1">دعوت دوستان</h4>
-              <p className="text-sm text-slate-600">۵۰۰ امتیاز به ازای هر دعوت موفق</p>
+
+            <div style={{
+              textAlign: 'center',
+              padding: '25px',
+              backgroundColor: '#dbeafe',
+              borderRadius: '12px',
+              border: '1px solid #bfdbfe'
+            }}>
+              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>👥</div>
+              <h4 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#1e40af' }}>
+                دعوت دوستان
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#1d4ed8' }}>
+                ۵۰۰ امتیاز به ازای هر دعوت موفق
+              </p>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-              <div className="text-3xl mb-2">⭐</div>
-              <h4 className="font-semibold mb-1">نظر و امتیاز</h4>
-              <p className="text-sm text-slate-600">۵۰ امتیاز برای هر نظر</p>
+
+            <div style={{
+              textAlign: 'center',
+              padding: '25px',
+              backgroundColor: '#f3e8ff',
+              borderRadius: '12px',
+              border: '1px solid #d8b4fe'
+            }}>
+              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>⭐</div>
+              <h4 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#7c3aed' }}>
+                نظر و امتیاز
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#8b5cf6' }}>
+                ۵۰ امتیاز برای هر نظر
+              </p>
             </div>
-            <div className="text-center p-4 bg-amber-50 rounded-lg">
-              <div className="text-3xl mb-2">🏆</div>
-              <h4 className="font-semibold mb-1">فعالیت روزانه</h4>
-              <p className="text-sm text-slate-600">۱۰ امتیاز روزانه برای ورود</p>
+
+            <div style={{
+              textAlign: 'center',
+              padding: '25px',
+              backgroundColor: '#fef3c7',
+              borderRadius: '12px',
+              border: '1px solid #fde68a'
+            }}>
+              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🗓️</div>
+              <h4 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#d97706' }}>
+                فعالیت روزانه
+              </h4>
+              <p style={{ fontSize: '0.8rem', color: '#f59e0b' }}>
+                ۱۰ امتیاز روزانه برای ورود
+              </p>
             </div>
+
           </div>
         </div>
+
       </div>
     </div>
   );

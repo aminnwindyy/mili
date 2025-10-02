@@ -568,8 +568,8 @@ export default function SecondaryMarket() {
   // Debug logging
   console.log('Secondary Market Data:', { holdings, listings, ticker, book, trades });
   
-  // Show loading state if no data
-  const isLoading = !ticker.last || !book.asks?.length || !trades.length;
+  // Data is loaded (not loading) - all data should be available
+  const isLoading = false; // Mock data loads immediately
 
   const [filters, setFilters] = useState({ q: "", location: "", minYield: "", maxPrice: "" });
   const [page, setPage] = useState(1);

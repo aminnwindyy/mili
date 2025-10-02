@@ -65,7 +65,7 @@ export default function Home() {
       <div className="relative pt-20 pb-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
+            <div className="space-y-8 flex flex-col items-start lg:items-start">
               <div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
                   سرمایه‌گذاری در 
@@ -85,8 +85,7 @@ export default function Home() {
                 flexDirection: 'column', 
                 gap: '12px', 
                 width: '100%', 
-                maxWidth: '280px', 
-                margin: '0 auto' 
+                maxWidth: '320px'
               }}>
                 <button 
                   onClick={() => handleGetStarted()}
@@ -134,8 +133,7 @@ export default function Home() {
                 padding: '16px',
                 border: '1px solid rgba(255, 255, 255, 0.3)',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                maxWidth: '280px',
-                margin: '0 auto',
+                maxWidth: '320px',
                 textAlign: 'center'
               }}>
                 <div style={{

@@ -1,8 +1,6 @@
 import React from 'react';
 
 export default function Loyalty() {
-  console.log('Loyalty page is loading...');
-  
   return (
     <div style={{ 
       padding: '20px', 
@@ -14,20 +12,6 @@ export default function Loyalty() {
       flexDirection: 'column',
       alignItems: 'center'
     }}>
-      
-      {/* Test Header */}
-      <div style={{
-        backgroundColor: '#ef4444',
-        color: 'white',
-        padding: '20px',
-        borderRadius: '10px',
-        marginBottom: '20px',
-        fontSize: '24px',
-        fontWeight: 'bold',
-        textAlign: 'center'
-      }}>
-        🚨 تست - صفحه وفاداری لود شد! 🚨
-      </div>
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         

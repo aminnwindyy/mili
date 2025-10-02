@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Eye, Zap } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import { Link } from 'react-router-dom';
+import { Eye, Zap } from 'lucide-react';
 
 export default function GuestModeButton() {
   const handleGuestMode = () => {
@@ -16,16 +15,39 @@ export default function GuestModeButton() {
   };
 
   return (
-    <Link to={createPageUrl("Dashboard")}>
-      <Button
+    <Link to={createPageUrl("Dashboard")} style={{ textDecoration: 'none' }}>
+      <button
         onClick={handleGuestMode}
-        variant="outline"
-        className="w-full h-12 text-sm font-medium bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-100 hover:to-yellow-100 text-amber-800 transition-all duration-300 rounded-lg sm:h-14 sm:text-lg sm:rounded-xl"
+        style={{
+          width: '100%',
+          height: '50px',
+          padding: '0 16px',
+          fontSize: '16px',
+          fontWeight: '500',
+          background: 'linear-gradient(to right, #fef3c7, #fde68a)',
+          color: '#92400e',
+          border: '2px solid #f59e0b',
+          borderRadius: '12px',
+          cursor: 'pointer',
+          transition: 'all 0.3s ease',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px'
+        }}
+        onMouseOver={(e) => {
+          e.target.style.background = 'linear-gradient(to right, #fde68a, #fcd34d)';
+          e.target.style.borderColor = '#d97706';
+        }}
+        onMouseOut={(e) => {
+          e.target.style.background = 'linear-gradient(to right, #fef3c7, #fde68a)';
+          e.target.style.borderColor = '#f59e0b';
+        }}
       >
-        <Eye className="w-4 h-4 mr-1 sm:w-5 sm:h-5 sm:mr-2" />
+        <Eye style={{ width: '18px', height: '18px' }} />
         تست بدون ثبت‌نام
-        <Zap className="w-3 h-3 mr-1 sm:w-4 sm:h-4 sm:mr-2 text-amber-600" />
-      </Button>
+        <Zap style={{ width: '16px', height: '16px', color: '#d97706' }} />
+      </button>
     </Link>
   );
 }

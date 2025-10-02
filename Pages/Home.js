@@ -80,30 +80,87 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="flex flex-col gap-2 w-full max-w-xs mx-auto sm:max-w-sm">
-                <Button 
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: '12px', 
+                width: '100%', 
+                maxWidth: '280px', 
+                margin: '0 auto' 
+              }}>
+                <button 
                   onClick={() => handleGetStarted()}
-                  className="w-full h-12 px-4 text-sm font-medium bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white shadow-md transition-all duration-300 rounded-lg sm:h-14 sm:px-6 sm:text-lg sm:rounded-xl"
+                  style={{
+                    width: '100%',
+                    height: '50px',
+                    padding: '0 16px',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    background: 'linear-gradient(to right, #059669, #047857)',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px'
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.background = 'linear-gradient(to right, #047857, #065f46)';
+                    e.target.style.transform = 'translateY(-1px)';
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.background = 'linear-gradient(to right, #059669, #047857)';
+                    e.target.style.transform = 'translateY(0)';
+                  }}
                 >
                   شروع سرمایه‌گذاری
-                  <ArrowUpLeft className="mr-1 w-4 h-4 sm:mr-2 sm:w-5 sm:h-5" />
-                </Button>
-                <div className="w-full">
+                  <ArrowUpLeft style={{ width: '18px', height: '18px' }} />
+                </button>
+                
+                <div style={{ width: '100%' }}>
                   <GuestModeButton />
                 </div>
               </div>
 
               {/* کوتاه‌ترین مسیر ثبت‌نام */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/30 shadow-sm max-w-xs mx-auto sm:max-w-sm sm:rounded-xl sm:p-4">
-                <div className="text-center">
-                  <div className="flex items-center justify-center gap-1 mb-1 sm:gap-2 sm:mb-2">
-                    <Zap className="w-3 h-3 text-emerald-600 sm:w-4 sm:h-4" />
-                    <span className="text-xs font-medium text-slate-700 sm:text-sm">ثبت‌نام فوری</span>
-                  </div>
-                  <p className="text-xs text-slate-500">
-                    موبایل → کد → شروع! ⏱️
-                  </p>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.9)',
+                backdropFilter: 'blur(8px)',
+                borderRadius: '12px',
+                padding: '16px',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                maxWidth: '280px',
+                margin: '0 auto',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  marginBottom: '8px'
+                }}>
+                  <Zap style={{ width: '16px', height: '16px', color: '#059669' }} />
+                  <span style={{ 
+                    fontSize: '14px', 
+                    fontWeight: '600', 
+                    color: '#374151' 
+                  }}>
+                    ثبت‌نام فوری
+                  </span>
                 </div>
+                <p style={{ 
+                  fontSize: '12px', 
+                  color: '#6b7280', 
+                  margin: 0 
+                }}>
+                  موبایل → کد → شروع! ⏱️
+                </p>
               </div>
             </div>
 
@@ -192,18 +249,82 @@ export default function Home() {
             به جمع بیش از ۱۰ هزار سرمایه‌گذار هوشمند بپیوندید
           </p>
           
-          <div className="flex flex-col gap-4 justify-center items-center w-full max-w-md mx-auto px-4">
-            <Link to={createPageUrl("Properties")} className="w-full">
-              <Button className="w-full h-14 text-lg font-semibold px-6 rounded-xl bg-white text-emerald-700 hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all duration-300">
-                <Eye className="w-5 h-5 mr-2" />
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            maxWidth: '320px',
+            margin: '0 auto',
+            padding: '0 16px'
+          }}>
+            <Link to={createPageUrl("Properties")} style={{ width: '100%', textDecoration: 'none' }}>
+              <button style={{
+                width: '100%',
+                height: '56px',
+                fontSize: '18px',
+                fontWeight: '600',
+                padding: '0 24px',
+                borderRadius: '16px',
+                background: 'white',
+                color: '#047857',
+                border: 'none',
+                boxShadow: '0 8px 16px rgba(0,0,0,0.1)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = '#f9fafb';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 20px rgba(0,0,0,0.15)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'white';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 16px rgba(0,0,0,0.1)';
+              }}
+              >
+                <Eye style={{ width: '20px', height: '20px' }} />
                 شروع سرمایه‌گذاری
-              </Button>
+              </button>
             </Link>
-            <Link to={createPageUrl("OwnerPortal")} className="w-full">
-              <Button variant="outline" className="w-full h-14 text-lg font-semibold px-6 rounded-xl border-2 border-white text-white hover:bg-white/20 hover:border-white/80 transition-all duration-300">
-                <Plus className="w-5 h-5 mr-2" />
+            
+            <Link to={createPageUrl("OwnerPortal")} style={{ width: '100%', textDecoration: 'none' }}>
+              <button style={{
+                width: '100%',
+                height: '56px',
+                fontSize: '18px',
+                fontWeight: '600',
+                padding: '0 24px',
+                borderRadius: '16px',
+                background: 'transparent',
+                color: 'white',
+                border: '2px solid white',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.2)';
+                e.target.style.borderColor = 'rgba(255, 255, 255, 0.8)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'transparent';
+                e.target.style.borderColor = 'white';
+              }}
+              >
+                <Plus style={{ width: '20px', height: '20px' }} />
                 ثبت ملک برای توکن‌سازی
-              </Button>
+              </button>
             </Link>
           </div>
         </div>

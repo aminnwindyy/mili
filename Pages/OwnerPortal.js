@@ -21,12 +21,14 @@ export default function OwnerPortal() {
         const propertiesData = await Property.filter({ owner_contact: user.email }); // Assuming email is used as contact
         setMyProperties(propertiesData);
       } catch (error) {
-        // Mock data for demo
-        setMyProperties([
+        // Load from localStorage (submitted properties) + Mock data for demo
+        const submittedProperties = JSON.parse(localStorage.getItem('owner-properties') || '[]');
+        const mockProperties = [
           { id: 1, title: 'آپارتمان نیاوران', status: 'فروخته_شده', total_value: 200000000000, collected: 200000000000 },
           { id: 2, title: 'ویلای لواسان', status: 'در_حال_فروش', total_value: 500000000000, collected: 150000000000 },
           { id: 3, title: 'مجتمع تجاری سعادت آباد', status: 'در_حال_بررسی', total_value: 800000000000, collected: 0 }
-        ]);
+        ];
+        setMyProperties([...submittedProperties, ...mockProperties]);
       }
       setIsLoading(false);
     };

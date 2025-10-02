@@ -15,6 +15,7 @@ import TREFs from '@/Pages/TREFs';
 import Investments from '@/Pages/Investments';
 import Events from '@/Pages/Events';
 import OwnerPortal from '@/Pages/OwnerPortal';
+import CreateToken from '@/Pages/CreateToken';
 import Referral from '@/Pages/Referral';
 import Wallet from '@/Pages/Wallet';
 import Watchlist from '@/Pages/Watchlist';
@@ -29,7 +30,7 @@ const root = ReactDOM.createRoot(container);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Layout>
+      <Layout currentPageName="">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Explore" element={<Explore />} />
@@ -42,6 +43,7 @@ root.render(
           <Route path="/Investments" element={<Investments />} />
           <Route path="/Events" element={<Events />} />
           <Route path="/OwnerPortal" element={<OwnerPortal />} />
+          <Route path="/CreateToken" element={<CreateToken />} />
           <Route path="/Referral" element={<Referral />} />
           <Route path="/Wallet" element={<Wallet />} />
           <Route path="/Watchlist" element={<Watchlist />} />

@@ -113,6 +113,19 @@ const useTrades = () => {
 const OrderBook = ({ book }) => {
   const asks = (book.asks || []).slice(0, 10);
   const bids = (book.bids || []).slice(0, 10);
+  
+  // Show loading state if no data
+  if (asks.length === 0 && bids.length === 0) {
+    return (
+      <Card className="border-0 shadow-md">
+        <CardHeader className="pb-2"><CardTitle className="text-slate-900 text-base">دفتر سفارشات</CardTitle></CardHeader>
+        <CardContent>
+          <div className="text-center py-8 text-slate-500">در حال بارگذاری...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+  
   return (
     <Card className="border-0 shadow-md">
       <CardHeader className="pb-2"><CardTitle className="text-slate-900 text-base">دفتر سفارشات</CardTitle></CardHeader>
@@ -157,13 +170,17 @@ const TradesTicker = ({ trades }) => (
     <CardContent>
       <div className="grid grid-cols-3 text-xs text-slate-500 mb-2"><span>قیمت</span><span>حجم</span><span>زمان</span></div>
       <div className="space-y-1 max-h-64 overflow-y-auto">
-        {trades.map((t) => (
-          <div key={t.id} className="grid grid-cols-3 text-sm items-center bg-white rounded border p-2">
-            <span className={t.side === 'buy' ? 'text-emerald-600 font-medium' : 'text-red-600 font-medium'}>{currency(t.price)}</span>
-            <span className="text-slate-700">{currency(t.size)}</span>
-            <span className="text-slate-500">{new Date(t.time).toLocaleTimeString('fa-IR')}</span>
-          </div>
-        ))}
+        {trades.length === 0 ? (
+          <div className="text-center py-4 text-slate-500">در حال بارگذاری...</div>
+        ) : (
+          trades.map((t) => (
+            <div key={t.id} className="grid grid-cols-3 text-sm items-center bg-white rounded border p-2">
+              <span className={t.side === 'buy' ? 'text-emerald-600 font-medium' : 'text-red-600 font-medium'}>{currency(t.price)}</span>
+              <span className="text-slate-700">{currency(t.size)}</span>
+              <span className="text-slate-500">{new Date(t.time).toLocaleTimeString('fa-IR')}</span>
+            </div>
+          ))
+        )}
       </div>
     </CardContent>
   </Card>
@@ -540,6 +557,9 @@ export default function SecondaryMarket() {
   const book = useOrderbook();
   const trades = useTrades();
 
+  // Debug logging
+  console.log('Secondary Market Data:', { holdings, listings, ticker, book, trades });
+
   const [filters, setFilters] = useState({ q: "", location: "", minYield: "", maxPrice: "" });
   const [page, setPage] = useState(1);
   const [sellOpen, setSellOpen] = useState(false);
@@ -589,38 +609,45 @@ export default function SecondaryMarket() {
 
           <TabsContent value="market" className="mt-5">
             <FiltersBar filters={filters} onChange={onFilterChange} onReset={onResetFilters} />
+            
             {/* Market layout: orderbook + trades + orderform */}
-            <div className="grid lg:grid-cols-3 gap-6 mb-6">
-              <div className="lg:col-span-2 space-y-6">
-                {/* KPI bar */}
-                <Card className="border-0 shadow-md">
-                  <CardContent className="p-4 grid grid-cols-3 gap-3 text-sm">
-                    <div>
-                      <div className="text-slate-500">آخرین قیمت</div>
-                      <div className="font-bold text-slate-900">{currency(ticker.last)} ریال</div>
-                    </div>
+            <div className="mb-8">
+              <h2 className="text-xl font-bold text-slate-900 mb-4">بازار زنده</h2>
+              <div className="grid lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 space-y-6">
+                  {/* KPI bar */}
+                  <Card className="border-0 shadow-md">
+                    <CardContent className="p-4 grid grid-cols-3 gap-3 text-sm">
                       <div>
-                      <div className="text-slate-500">تغییر ۲۴س</div>
-                      <div className={ticker.change24h >= 0 ? 'font-bold text-emerald-600' : 'font-bold text-red-600'}>
-                        {ticker.change24h >= 0 ? '+' : ''}{pct(ticker.change24h)}
+                        <div className="text-slate-500">آخرین قیمت</div>
+                        <div className="font-bold text-slate-900">{currency(ticker.last)} ریال</div>
                       </div>
-                    </div>
-                    <div>
-                      <div className="text-slate-500">بالا/پایین ۲۴س</div>
-                      <div className="font-medium text-slate-700">{currency(ticker.high24h)} / {currency(ticker.low24h)}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                <OrderBook book={book} />
-                <TradesTicker trades={trades} />
-              </div>
-              <div className="space-y-6">
-                <OrderForm />
+                      <div>
+                        <div className="text-slate-500">تغییر ۲۴س</div>
+                        <div className={ticker.change24h >= 0 ? 'font-bold text-emerald-600' : 'font-bold text-red-600'}>
+                          {ticker.change24h >= 0 ? '+' : ''}{pct(ticker.change24h)}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-slate-500">بالا/پایین ۲۴س</div>
+                        <div className="font-medium text-slate-700">{currency(ticker.high24h)} / {currency(ticker.low24h)}</div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <OrderBook book={book} />
+                  <TradesTicker trades={trades} />
+                </div>
+                <div className="space-y-6">
+                  <OrderForm />
+                </div>
               </div>
             </div>
 
             {/* Marketplace listings */}
-            <ListingsGrid data={listings} page={page} perPage={6} onPage={setPage} filters={filters} />
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">آگهی‌های فروش</h2>
+              <ListingsGrid data={listings} page={page} perPage={6} onPage={setPage} filters={filters} />
+            </div>
           </TabsContent>
 
           <TabsContent value="holdings" className="mt-5">

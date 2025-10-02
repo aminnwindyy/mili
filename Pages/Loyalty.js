@@ -1,8 +1,4 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
-import { LoyaltyProgram } from '@/entities/LoyaltyProgram';
-import { Investment } from '@/entities/Investment';
-import { User } from '@/entities/User';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -56,14 +52,22 @@ const benefits = {
 };
 
 export default function Loyalty() {
-  const [loyaltyData, setLoyaltyData] = useState(null);
-  const [user, setUser] = useState(null);
-  const [investments, setInvestments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loyaltyData, setLoyaltyData] = useState({
+    current_tier: 'Gold',
+    total_points: 7500,
+    current_tier_points: 2500,
+    next_tier_requirement: 20000,
+    lifetime_investment: 50000000000,
+    referrals_count: 3,
+    benefits_unlocked: benefits.Gold
+  });
+  
   const [availableRewards, setAvailableRewards] = useState([]);
   const [claimedRewards, setClaimedRewards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const generateAvailableRewards = useCallback((currentLoyaltyData) => {
+  // Generate available rewards based on current points
+  useEffect(() => {
     const rewards = [
       {
         id: 1,
@@ -108,160 +112,41 @@ export default function Loyalty() {
     ];
 
     const availableForUser = rewards.filter(reward =>
-      currentLoyaltyData && currentLoyaltyData.total_points >= reward.points_required
+      loyaltyData.total_points >= reward.points_required
     );
 
     setAvailableRewards(availableForUser);
-  }, []);
+  }, [loyaltyData.total_points]);
 
-  const calculateAndUpdatePoints = useCallback(async (userEmail, userInvestments, currentLoyaltyData) => {
-    let totalPoints = 100; // Welcome bonus
-    let lifetimeInvestment = 0;
-
-    // Calculate points from investments
-    userInvestments.forEach(investment => {
-      lifetimeInvestment += investment.total_amount;
-      // 1 point per million rial invested
-      totalPoints += Math.floor(investment.total_amount / 1000000);
-    });
-
-    // Calculate referral points (if any)
-    try {
-      const { Referral } = await import('@/entities/Referral');
-      const referrals = await Referral.filter({ referrer_email: userEmail, status: 'completed' });
-      totalPoints += referrals.length * 500; // 500 points per successful referral
-    } catch (error) {
-      console.log('Referral calculation skipped');
-    }
-
-    // Determine current tier
-    let currentTier = 'Bronze';
-    const tierNames = Object.keys(tiers);
-
-    for (let i = tierNames.length - 1; i >= 0; i--) {
-      if (totalPoints >= tiers[tierNames[i]].points) {
-        currentTier = tierNames[i];
-        break;
-      }
-    }
-
-    // Calculate next tier requirement
-    const currentTierIndex = tierNames.indexOf(currentTier);
-    const nextTier = tierNames[currentTierIndex + 1];
-    const nextTierRequirement = nextTier ? tiers[nextTier].points : null;
-
-    // Update loyalty data
-    const updateData = {
-      total_points: totalPoints,
-      current_tier: currentTier,
-      current_tier_points: totalPoints - tiers[currentTier].points,
-      next_tier_requirement: nextTierRequirement,
-      lifetime_investment: lifetimeInvestment,
-      benefits_unlocked: benefits[currentTier]
-    };
-
-    try {
-      await LoyaltyProgram.update(currentLoyaltyData?.id || 'demo', updateData);
-      setLoyaltyData(prev => ({ ...prev, ...updateData }));
-    } catch (error) {
-      console.log('Update skipped for demo or loyaltyData.id was undefined:', error);
-      setLoyaltyData(prev => ({ ...prev, ...updateData }));
-    }
-  }, []);
-
-  const loadLoyaltyData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const userData = await User.me();
-      setUser(userData);
-
-      // Load investments to calculate points
-      const userInvestments = await Investment.filter({ investor_email: userData.email });
-      setInvestments(userInvestments);
-
-      // Check existing loyalty program
-      let loyaltyRecords = await LoyaltyProgram.filter({ user_email: userData.email });
-
-      if (!loyaltyRecords || loyaltyRecords.length === 0) {
-        // Create new loyalty program entry
-        const initialData = {
-          user_email: userData.email,
-          current_tier: 'Bronze',
-          total_points: 100, // Welcome bonus
-          current_tier_points: 100,
-          next_tier_requirement: tiers.Silver.points,
-          lifetime_investment: 0,
-          referrals_count: 0,
-          benefits_unlocked: benefits.Bronze
-        };
-
-        const newRecord = await LoyaltyProgram.create(initialData);
-        setLoyaltyData(newRecord);
-      } else {
-        setLoyaltyData(loyaltyRecords[0]);
-      }
-
-      // Calculate and update points based on activity
-      await calculateAndUpdatePoints(userData.email, userInvestments, loyaltyRecords[0] || null);
-
-      // Generate available rewards
-      generateAvailableRewards(loyaltyRecords[0] || null);
-
-    } catch (error) {
-      console.error('Error loading loyalty data:', error);
-      // Demo data
-      const demoData = {
-        current_tier: 'Gold',
-        total_points: 7500,
-        current_tier_points: 2500,
-        next_tier_requirement: tiers.Platinum.points,
-        lifetime_investment: 50000000000, // 50 billion rial
-        referrals_count: 3,
-        benefits_unlocked: benefits.Gold
-      };
-      setLoyaltyData(demoData);
-      generateAvailableRewards(demoData);
-    }
-    setIsLoading(false);
-  }, []); // Empty dependency array to avoid infinite loops
-
-  useEffect(() => {
-    loadLoyaltyData();
-  }, [loadLoyaltyData]); // loadLoyaltyData is now a stable reference due to useCallback
-
-  const claimReward = async (reward) => {
-    if (!loyaltyData || loyaltyData.total_points < reward.points_required) {
+  const claimReward = (reward) => {
+    if (loyaltyData.total_points < reward.points_required) {
       alert('امتیاز کافی ندارید!');
       return;
     }
 
-    try {
-      // Deduct points
-      const newPoints = loyaltyData.total_points - reward.points_required;
-      await LoyaltyProgram.update(loyaltyData.id, { total_points: newPoints });
+    // Deduct points
+    const newPoints = loyaltyData.total_points - reward.points_required;
+    setLoyaltyData(prev => ({
+      ...prev,
+      total_points: newPoints
+    }));
 
-      setLoyaltyData(prev => ({
-        ...prev,
-        total_points: newPoints
-      }));
+    // Add to claimed rewards
+    const claimed = {
+      ...reward,
+      claimed_at: new Date().toISOString(),
+      expires_at: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()
+    };
 
-      // Add to claimed rewards
-      const claimed = {
-        ...reward,
-        claimed_at: new Date().toISOString(),
-        expires_at: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString() // 90 days
-      };
-
-      setClaimedRewards(prev => [...prev, claimed]);
-      alert(`پاداش "${reward.title}" با موفقیت دریافت شد!`);
-
-      // Refresh available rewards
-      generateAvailableRewards({ ...loyaltyData, total_points: newPoints });
-    } catch (error) {
-      console.error('Error claiming reward:', error);
-      alert('خطا در دریافت پاداش');
-    }
+    setClaimedRewards(prev => [...prev, claimed]);
+    alert(`پاداش "${reward.title}" با موفقیت دریافت شد!`);
   };
+
+  const currentTierIndex = Object.keys(tiers).indexOf(loyaltyData.current_tier);
+  const nextTierName = Object.keys(tiers)[currentTierIndex + 1];
+  const currentTierPointsEarned = loyaltyData.total_points - tiers[loyaltyData.current_tier].points;
+  const pointsNeededForNextTier = nextTierName ? tiers[nextTierName].points - tiers[loyaltyData.current_tier].points : 0;
+  const progressPercentage = pointsNeededForNextTier > 0 ? (currentTierPointsEarned / pointsNeededForNextTier) * 100 : 100;
 
   if (isLoading) {
     return (
@@ -271,14 +156,6 @@ export default function Loyalty() {
       </div>
     );
   }
-
-  const currentTierIndex = Object.keys(tiers).indexOf(loyaltyData?.current_tier || 'Bronze');
-  const nextTierName = Object.keys(tiers)[currentTierIndex + 1];
-  // Calculate progress percentage carefully to avoid division by zero or negative values
-  const currentTierPointsEarned = loyaltyData?.total_points ? loyaltyData.total_points - (tiers[loyaltyData.current_tier]?.points || 0) : 0;
-  const pointsNeededForNextTier = nextTierName ? (tiers[nextTierName]?.points || 0) - (tiers[loyaltyData?.current_tier || 'Bronze']?.points || 0) : 0;
-  const progressPercentage = pointsNeededForNextTier > 0 ? (currentTierPointsEarned / pointsNeededForNextTier) * 100 : 100;
-
 
   return (
     <div className="p-6 bg-gradient-to-bl from-slate-50 to-amber-50 min-h-screen">
@@ -291,22 +168,22 @@ export default function Loyalty() {
         </div>
 
         {/* Current Status */}
-        <Card className={`shadow-xl border-0 bg-gradient-to-bl ${tiers[loyaltyData?.current_tier || 'Bronze'].color} text-white mb-8`}>
+        <Card className={`shadow-xl border-0 bg-gradient-to-bl ${tiers[loyaltyData.current_tier].color} text-white mb-8`}>
           <CardContent className="p-8 text-center">
-            <div className="text-6xl mb-4">{tiers[loyaltyData?.current_tier || 'Bronze'].icon}</div>
-            <h2 className="text-3xl font-bold mb-2">{loyaltyData?.current_tier || 'Bronze'}</h2>
+            <div className="text-6xl mb-4">{tiers[loyaltyData.current_tier].icon}</div>
+            <h2 className="text-3xl font-bold mb-2">{loyaltyData.current_tier}</h2>
             <p className="text-lg opacity-90 mb-6">
-              شما در سطح {loyaltyData?.current_tier || 'Bronze'} هستید
+              شما در سطح {loyaltyData.current_tier} هستید
             </p>
             <div className="text-2xl font-bold mb-2">
-              {loyaltyData?.total_points?.toLocaleString() || '0'} امتیاز
+              {loyaltyData.total_points.toLocaleString()} امتیاز
             </div>
 
             {nextTierName && (
               <div className="mt-6">
                 <div className="flex justify-between text-sm mb-2">
                   <span>تا سطح {nextTierName}</span>
-                  <span>{(tiers[nextTierName]?.points - loyaltyData?.total_points)?.toLocaleString() || '0'} امتیاز</span>
+                  <span>{(tiers[nextTierName].points - loyaltyData.total_points).toLocaleString()} امتیاز</span>
                 </div>
                 <Progress value={progressPercentage} className="h-3 bg-white/20" />
               </div>
@@ -320,7 +197,7 @@ export default function Loyalty() {
             <CardContent className="p-6 text-center">
               <Trophy className="w-8 h-8 mx-auto mb-2 text-amber-600" />
               <div className="text-2xl font-bold text-slate-900">
-                {loyaltyData?.total_points?.toLocaleString() || '0'}
+                {loyaltyData.total_points.toLocaleString()}
               </div>
               <div className="text-sm text-slate-600">کل امتیاز</div>
             </CardContent>
@@ -330,7 +207,7 @@ export default function Loyalty() {
             <CardContent className="p-6 text-center">
               <Zap className="w-8 h-8 mx-auto mb-2 text-blue-600" />
               <div className="text-2xl font-bold text-slate-900">
-                {((loyaltyData?.lifetime_investment || 0) / 1000000000).toFixed(1)}میلیارد
+                {(loyaltyData.lifetime_investment / 1000000000).toFixed(1)}میلیارد
               </div>
               <div className="text-sm text-slate-600">کل سرمایه‌گذاری</div>
             </CardContent>
@@ -340,7 +217,7 @@ export default function Loyalty() {
             <CardContent className="p-6 text-center">
               <Crown className="w-8 h-8 mx-auto mb-2 text-purple-600" />
               <div className="text-2xl font-bold text-slate-900">
-                {loyaltyData?.referrals_count || 0}
+                {loyaltyData.referrals_count}
               </div>
               <div className="text-sm text-slate-600">دعوت موفق</div>
             </CardContent>
@@ -398,7 +275,7 @@ export default function Loyalty() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {(loyaltyData?.benefits_unlocked || benefits.Bronze).map((benefit, index) => (
+                {loyaltyData.benefits_unlocked.map((benefit, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
                     <CheckCircle className="w-5 h-5 text-emerald-600" />
                     <span className="text-slate-700">{benefit}</span>

@@ -44,7 +44,7 @@ export default function Dashboard() {
   const [investments, setInvestments] = useState([]);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isSimpleMode, setIsSimpleMode] = useState(true);
+  const [isSimpleMode, setIsSimpleMode] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [widgetOrder, setWidgetOrder] = useState(() => {
     try {
@@ -87,7 +87,7 @@ export default function Dashboard() {
   };
 
   const loadUserSettings = () => {
-    const simpleMode = localStorage.getItem('simple_mode') !== 'false';
+    const simpleMode = localStorage.getItem('simple_mode') === 'true';
     setIsSimpleMode(simpleMode);
   };
 

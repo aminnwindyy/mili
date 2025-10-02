@@ -22,7 +22,7 @@ export default function Settings() {
 
   // States for user settings
   const [fullName, setFullName] = useState("");
-  const [isSimpleMode, setIsSimpleMode] = useState(true);
+  const [isSimpleMode, setIsSimpleMode] = useState(false);
   const [soundEffects, setSoundEffects] = useState(true);
   const [vibration, setVibration] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -38,7 +38,7 @@ export default function Settings() {
       const userData = await User.me();
       setUser(userData);
       setFullName(userData.full_name || "");
-      setIsSimpleMode(userData.simple_mode ?? true);
+      setIsSimpleMode(userData.simple_mode ?? false);
       setSoundEffects(userData.sound_effects ?? true);
       setVibration(userData.vibration ?? true);
       // Assuming notification settings are stored similarly

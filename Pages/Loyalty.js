@@ -63,10 +63,7 @@ export default function Loyalty() {
   const [availableRewards, setAvailableRewards] = useState([]);
   const [claimedRewards, setClaimedRewards] = useState([]);
 
-  // Memoize generateAvailableRewards if it depends on loyaltyData,
-  // or ensure it receives loyaltyData as an argument.
-  // For now, keep it as is, assuming it reads latest state or its call context ensures it.
-  const generateAvailableRewards = () => {
+  const generateAvailableRewards = useCallback((currentLoyaltyData) => {
     const rewards = [
       {
         id: 1,
@@ -111,14 +108,13 @@ export default function Loyalty() {
     ];
 
     const availableForUser = rewards.filter(reward =>
-      loyaltyData && loyaltyData.total_points >= reward.points_required
+      currentLoyaltyData && currentLoyaltyData.total_points >= reward.points_required
     );
 
     setAvailableRewards(availableForUser);
-  };
+  }, []);
 
-  // Memoize calculateAndUpdatePoints if it depends on loyaltyData
-  const calculateAndUpdatePoints = async (userEmail, userInvestments) => {
+  const calculateAndUpdatePoints = useCallback(async (userEmail, userInvestments, currentLoyaltyData) => {
     let totalPoints = 100; // Welcome bonus
     let lifetimeInvestment = 0;
 
@@ -165,18 +161,13 @@ export default function Loyalty() {
     };
 
     try {
-      // loyaltyData?.id might be null on initial load if no record found.
-      // The demo ID 'demo' will be used in that case, but in a real app,
-      // it would be the ID from the newly created record.
-      await LoyaltyProgram.update(loyaltyData?.id || 'demo', updateData);
+      await LoyaltyProgram.update(currentLoyaltyData?.id || 'demo', updateData);
       setLoyaltyData(prev => ({ ...prev, ...updateData }));
     } catch (error) {
       console.log('Update skipped for demo or loyaltyData.id was undefined:', error);
-      // If loyaltyData.id was undefined, this error implies we tried to update a non-existent record via 'demo'
-      // For the demo purpose, we'll still update the state
       setLoyaltyData(prev => ({ ...prev, ...updateData }));
     }
-  };
+  }, []);
 
   const loadLoyaltyData = useCallback(async () => {
     setIsLoading(true);
@@ -211,15 +202,10 @@ export default function Loyalty() {
       }
 
       // Calculate and update points based on activity
-      // Note: calculateAndUpdatePoints and generateAvailableRewards rely on the `loyaltyData` state variable.
-      // Due to async state updates, `loyaltyData` might not be immediately updated after `setLoyaltyData` calls
-      // within the current execution frame of `loadLoyaltyData`.
-      // For a robust solution, you might pass the calculated/updated loyalty object directly to these functions
-      // or re-fetch `loyaltyData` to ensure the most current state.
-      await calculateAndUpdatePoints(userData.email, userInvestments);
+      await calculateAndUpdatePoints(userData.email, userInvestments, loyaltyRecords[0] || null);
 
       // Generate available rewards
-      generateAvailableRewards();
+      generateAvailableRewards(loyaltyRecords[0] || null);
 
     } catch (error) {
       console.error('Error loading loyalty data:', error);
@@ -234,14 +220,10 @@ export default function Loyalty() {
         benefits_unlocked: benefits.Gold
       };
       setLoyaltyData(demoData);
-      // Ensure generateAvailableRewards is called after setting demo data
-      // For this case, it will pick up the demoData from state in the next render cycle,
-      // or might need to be passed explicitly: generateAvailableRewards(demoData);
-      generateAvailableRewards(); // This will use the `loyaltyData` state which should now contain `demoData`.
+      generateAvailableRewards(demoData);
     }
     setIsLoading(false);
-  }, [calculateAndUpdatePoints, generateAvailableRewards, setLoyaltyData, setInvestments, setIsLoading, setUser]); // Dependencies added to useCallback to ensure stable function reference and avoid stale closures if inner functions are not memoized.
-  // Original outline requested useCallback([]), but that would cause lint warnings if calculateAndUpdatePoints and generateAvailableRewards are not stable.
+  }, []); // Empty dependency array to avoid infinite loops
 
   useEffect(() => {
     loadLoyaltyData();
@@ -274,7 +256,7 @@ export default function Loyalty() {
       alert(`پاداش "${reward.title}" با موفقیت دریافت شد!`);
 
       // Refresh available rewards
-      generateAvailableRewards();
+      generateAvailableRewards({ ...loyaltyData, total_points: newPoints });
     } catch (error) {
       console.error('Error claiming reward:', error);
       alert('خطا در دریافت پاداش');

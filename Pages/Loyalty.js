@@ -294,7 +294,7 @@ export default function Loyalty() {
   const nextTierName = Object.keys(tiers)[currentTierIndex + 1];
   // Calculate progress percentage carefully to avoid division by zero or negative values
   const currentTierPointsEarned = loyaltyData?.total_points ? loyaltyData.total_points - (tiers[loyaltyData.current_tier]?.points || 0) : 0;
-  const pointsNeededForNextTier = nextTierName ? (tiers[nextTierName]?.points || 0) - (tiers[loyloyaltyData?.current_tier || 'Bronze']?.points || 0) : 0;
+  const pointsNeededForNextTier = nextTierName ? (tiers[nextTierName]?.points || 0) - (tiers[loyaltyData?.current_tier || 'Bronze']?.points || 0) : 0;
   const progressPercentage = pointsNeededForNextTier > 0 ? (currentTierPointsEarned / pointsNeededForNextTier) * 100 : 100;
 
 

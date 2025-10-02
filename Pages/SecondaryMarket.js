@@ -30,9 +30,17 @@ const truncate = (s, n = 28) => (s?.length > n ? s.slice(0, n) + "…" : s);
 
 // market feeds (mock-friendly)
 const useTicker = () => {
-  const [data, setData] = useState({ last: 0, change24h: 0, high24h: 0, low24h: 0 });
+  const [data, setData] = useState({ last: 60000000, change24h: 2.5, high24h: 61500000, low24h: 58000000, volume24h: 1200 });
   useEffect(() => {
-    const load = () => fetch('/api/secondary-market/ticker').then(r => r.json()).then(setData).catch(() => {});
+    const load = () => {
+      fetch('/api/secondary-market/ticker')
+        .then(r => r.json())
+        .then(setData)
+        .catch(() => {
+          // Fallback to mock data if API fails
+          setData({ last: 60000000, change24h: 2.5, high24h: 61500000, low24h: 58000000, volume24h: 1200 });
+        });
+    };
     load();
     const t = setInterval(load, 5000);
     return () => clearInterval(t);
@@ -41,9 +49,33 @@ const useTicker = () => {
 };
 
 const useOrderbook = () => {
-  const [book, setBook] = useState({ bids: [], asks: [], mid: 0 });
+  const [book, setBook] = useState({ bids: [], asks: [], mid: 60000000 });
   useEffect(() => {
-    const load = () => fetch('/api/secondary-market/orderbook').then(r => r.json()).then(setBook).catch(() => {});
+    const load = () => {
+      fetch('/api/secondary-market/orderbook')
+        .then(r => r.json())
+        .then(setBook)
+        .catch(() => {
+          // Fallback to mock data if API fails
+          const mid = 60000000;
+    const genLevels = (count, side) => {
+      const levels = [];
+      for (let i = 0; i < count; i++) {
+        const price = side === 'ask' 
+                ? mid + (i + 1) * 200000 + Math.floor(Math.random() * 50000)
+                : mid - (i + 1) * 200000 - Math.floor(Math.random() * 50000);
+        const size = Math.floor(5 + Math.random() * 120);
+        levels.push({ price, size });
+      }
+      return levels;
+    };
+          setBook({
+            asks: genLevels(12, 'ask').sort((a, b) => a.price - b.price),
+            bids: genLevels(12, 'bid').sort((a, b) => b.price - a.price),
+            mid
+          });
+        });
+    };
     load();
     const t = setInterval(load, 4000);
     return () => clearInterval(t);
@@ -54,7 +86,22 @@ const useOrderbook = () => {
 const useTrades = () => {
   const [trades, setTrades] = useState([]);
   useEffect(() => {
-    const load = () => fetch('/api/secondary-market/trades').then(r => r.json()).then(d => setTrades(d.data || [])).catch(() => {});
+    const load = () => {
+      fetch('/api/secondary-market/trades')
+        .then(r => r.json())
+        .then(d => setTrades(d.data || []))
+        .catch(() => {
+          // Fallback to mock data if API fails
+          const mid = 60000000;
+          setTrades([
+            { id: 't1', side: 'buy', price: mid + 120000, size: 12, time: new Date().toISOString() },
+            { id: 't2', side: 'sell', price: mid - 80000, size: 20, time: new Date(Date.now() - 30000).toISOString() },
+            { id: 't3', side: 'buy', price: mid + 50000, size: 8, time: new Date(Date.now() - 60000).toISOString() },
+            { id: 't4', side: 'sell', price: mid - 150000, size: 15, time: new Date(Date.now() - 90000).toISOString() },
+            { id: 't5', side: 'buy', price: mid + 80000, size: 25, time: new Date(Date.now() - 120000).toISOString() },
+          ]);
+    });
+  };
     load();
     const t = setInterval(load, 4000);
     return () => clearInterval(t);
@@ -179,6 +226,11 @@ const useListings = () => {
       { id: "l3", propertyId: "prop-5", title: "مرکز صنعتی شادآباد", location: "تهران، شادآباد", qty: 2, price: 69_000_000, yield: 19.0, seller: "user-558", image: "https://images.unsplash.com/photo-1582582744564-0896bf55642c?w=600&h=380&fit=crop" },
       { id: "l4", propertyId: "prop-4", title: "برج اداری ونک", location: "تهران، ونک", qty: 10, price: 41_000_000, yield: 17.2, seller: "user-101", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=380&fit=crop" },
       { id: "l5", propertyId: "prop-3", title: "ویلای باغ فردوس", location: "شمیرانات، باغ فردوس", qty: 4, price: 25_500_000, yield: 16.8, seller: "user-414", image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c52f?w=600&h=380&fit=crop" },
+      { id: "l6", propertyId: "prop-6", title: "مغازه تجاری کریمخان", location: "تهران، کریمخان", qty: 8, price: 35_000_000, yield: 28.5, seller: "user-723", image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=380&fit=crop" },
+      { id: "l7", propertyId: "prop-7", title: "آپارتمان نیاوران", location: "تهران، نیاوران", qty: 6, price: 85_000_000, yield: 12.3, seller: "user-445", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&h=380&fit=crop" },
+      { id: "l8", propertyId: "prop-8", title: "زمین کشاورزی ورامین", location: "تهران، ورامین", qty: 15, price: 18_000_000, yield: 35.2, seller: "user-892", image: "https://images.unsplash.com/photo-15003820174682-96b4ddf4b86e?w=600&h=380&fit=crop" },
+      { id: "l9", propertyId: "prop-9", title: "دفتر کار مرکز", location: "تهران، مرکز", qty: 12, price: 45_000_000, yield: 25.3, seller: "user-156", image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=380&fit=crop" },
+      { id: "l10", propertyId: "prop-10", title: "ویلای شمال", location: "مازندران، نوشهر", qty: 3, price: 95_000_000, yield: 15.8, seller: "user-334", image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=380&fit=crop" },
     ]);
   }, []);
   return data;
@@ -547,7 +599,7 @@ export default function SecondaryMarket() {
                       <div className="text-slate-500">آخرین قیمت</div>
                       <div className="font-bold text-slate-900">{currency(ticker.last)} ریال</div>
                     </div>
-                    <div>
+                      <div>
                       <div className="text-slate-500">تغییر ۲۴س</div>
                       <div className={ticker.change24h >= 0 ? 'font-bold text-emerald-600' : 'font-bold text-red-600'}>
                         {ticker.change24h >= 0 ? '+' : ''}{pct(ticker.change24h)}

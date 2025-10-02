@@ -1,15 +1,35 @@
 import React from 'react';
 
 export default function Loyalty() {
+  console.log('Loyalty page is loading...');
+  
   return (
     <div style={{ 
       padding: '20px', 
       backgroundColor: '#f8fafc', 
       minHeight: '100vh', 
       fontFamily: 'system-ui, -apple-system, sans-serif',
-      direction: 'rtl'
+      direction: 'rtl',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
     }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      
+      {/* Test Header */}
+      <div style={{
+        backgroundColor: '#ef4444',
+        color: 'white',
+        padding: '20px',
+        borderRadius: '10px',
+        marginBottom: '20px',
+        fontSize: '24px',
+        fontWeight: 'bold',
+        textAlign: 'center'
+      }}>
+        🚨 تست - صفحه وفاداری لود شد! 🚨
+      </div>
+
+      <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
         
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
@@ -80,8 +100,8 @@ export default function Loyalty() {
                 transition: 'width 0.5s ease'
               }}></div>
             </div>
-          </div>
-        </div>
+                </div>
+              </div>
 
         {/* Stats Grid */}
         <div style={{ 
@@ -101,7 +121,7 @@ export default function Loyalty() {
             <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🏆</div>
             <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>۷,۵۰۰</div>
             <div style={{ fontSize: '0.9rem', color: '#64748b' }}>کل امتیاز کسب شده</div>
-          </div>
+              </div>
 
           <div style={{
             backgroundColor: 'white',
@@ -114,7 +134,7 @@ export default function Loyalty() {
             <div style={{ fontSize: '3rem', marginBottom: '10px' }}>💰</div>
             <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>۵۰ میلیارد</div>
             <div style={{ fontSize: '0.9rem', color: '#64748b' }}>کل سرمایه‌گذاری (ریال)</div>
-          </div>
+              </div>
 
           <div style={{
             backgroundColor: 'white',
@@ -127,250 +147,115 @@ export default function Loyalty() {
             <div style={{ fontSize: '3rem', marginBottom: '10px' }}>👥</div>
             <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#1e293b' }}>۳</div>
             <div style={{ fontSize: '0.9rem', color: '#64748b' }}>دعوت موفق از دوستان</div>
-          </div>
+              </div>
         </div>
 
-        {/* Two Column Layout */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', 
-          gap: '30px',
+          {/* Available Rewards */}
+        <div style={{
+          backgroundColor: 'white',
+          padding: '30px',
+          borderRadius: '15px',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
+          border: '1px solid #e2e8f0',
           marginBottom: '40px'
         }}>
-          
-          {/* Available Rewards */}
-          <div style={{
-            backgroundColor: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-            border: '1px solid #e2e8f0'
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '10px', 
+            marginBottom: '25px' 
           }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '10px', 
-              marginBottom: '25px' 
-            }}>
-              <span style={{ fontSize: '2rem' }}>🎁</span>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
+            <span style={{ fontSize: '2rem' }}>🎁</span>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
                 پاداش‌های قابل دریافت
-              </h3>
-            </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              
-              {/* Reward 1 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '20px',
-                backgroundColor: '#dcfce7',
-                borderRadius: '12px',
-                border: '1px solid #bbf7d0'
-              }}>
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
-                    کش‌بک ۱٪ خرید بعدی
-                  </h4>
-                  <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
-                    دریافت ۱٪ کش‌بک در اولین خرید بعدی شما
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <span style={{ color: '#f59e0b' }}>⭐</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
-                      ۵۰۰ امتیاز
-                    </span>
-                  </div>
-                </div>
-                <button 
-                  onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#16a34a',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontSize: '0.9rem'
-                  }}
-                >
-                  دریافت
-                </button>
-              </div>
-
-              {/* Reward 2 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '20px',
-                backgroundColor: '#dcfce7',
-                borderRadius: '12px',
-                border: '1px solid #bbf7d0'
-              }}>
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
-                    مشاوره رایگان
-                  </h4>
-                  <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
-                    ۱ ساعت مشاوره رایگان با کارشناسان ما
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <span style={{ color: '#f59e0b' }}>⭐</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
-                      ۱,۰۰۰ امتیاز
-                    </span>
-                  </div>
-                </div>
-                <button 
-                  onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#16a34a',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontSize: '0.9rem'
-                  }}
-                >
-                  دریافت
-                </button>
-              </div>
-
-              {/* Reward 3 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '20px',
-                backgroundColor: '#dcfce7',
-                borderRadius: '12px',
-                border: '1px solid #bbf7d0'
-              }}>
-                <div style={{ flex: 1 }}>
-                  <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
-                    دسترسی زودهنگام
-                  </h4>
-                  <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
-                    دسترسی ۲۴ ساعته زودتر به پروژه‌های جدید
-                  </p>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <span style={{ color: '#f59e0b' }}>⭐</span>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
-                      ۲,۰۰۰ امتیاز
-                    </span>
-                  </div>
-                </div>
-                <button 
-                  onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#16a34a',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontSize: '0.9rem'
-                  }}
-                >
-                  دریافت
-                </button>
-              </div>
-
-            </div>
+            </h3>
           </div>
-
-          {/* Current Benefits */}
-          <div style={{
-            backgroundColor: 'white',
-            padding: '30px',
-            borderRadius: '15px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-            border: '1px solid #e2e8f0'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '10px', 
-              marginBottom: '25px' 
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            
+            {/* Reward 1 */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '20px',
+              backgroundColor: '#dcfce7',
+              borderRadius: '12px',
+              border: '1px solid #bbf7d0'
             }}>
-              <span style={{ fontSize: '2rem' }}>✅</span>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>
-                مزایای فعلی شما
-              </h3>
+              <div style={{ flex: 1 }}>
+                <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
+                  کش‌بک ۱٪ خرید بعدی
+                </h4>
+                <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
+                  دریافت ۱٪ کش‌بک در اولین خرید بعدی شما
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ color: '#f59e0b' }}>⭐</span>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
+                    ۵۰۰ امتیاز
+                  </span>
+                        </div>
+                      </div>
+              <button 
+                onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#16a34a',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  fontSize: '0.9rem'
+                }}
+                      >
+                        دریافت
+              </button>
+                    </div>
+
+            {/* Reward 2 */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '20px',
+              backgroundColor: '#dcfce7',
+              borderRadius: '12px',
+              border: '1px solid #bbf7d0'
+            }}>
+              <div style={{ flex: 1 }}>
+                <h4 style={{ fontWeight: 'bold', marginBottom: '5px', color: '#166534' }}>
+                  مشاوره رایگان
+                </h4>
+                <p style={{ fontSize: '0.9rem', color: '#15803d', marginBottom: '8px' }}>
+                  ۱ ساعت مشاوره رایگان با کارشناسان ما
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <span style={{ color: '#f59e0b' }}>⭐</span>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#166534' }}>
+                    ۱,۰۰۰ امتیاز
+                  </span>
+                </div>
+              </div>
+              <button 
+                onClick={() => alert('پاداش با موفقیت دریافت شد! 🎉')}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#16a34a',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  fontSize: '0.9rem'
+                }}
+              >
+                دریافت
+              </button>
             </div>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '15px',
-                backgroundColor: '#dbeafe',
-                borderRadius: '10px'
-              }}>
-                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
-                <span style={{ color: '#1e40af', fontWeight: '500' }}>پشتیبانی VIP</span>
-              </div>
 
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '15px',
-                backgroundColor: '#dbeafe',
-                borderRadius: '10px'
-              }}>
-                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
-                <span style={{ color: '#1e40af', fontWeight: '500' }}>کاهش ۰.۲٪ کارمزد معاملات</span>
-              </div>
-
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '15px',
-                backgroundColor: '#dbeafe',
-                borderRadius: '10px'
-              }}>
-                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
-                <span style={{ color: '#1e40af', fontWeight: '500' }}>دسترسی زودهنگام به پروژه‌ها</span>
-              </div>
-
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '15px',
-                backgroundColor: '#dbeafe',
-                borderRadius: '10px'
-              }}>
-                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
-                <span style={{ color: '#1e40af', fontWeight: '500' }}>مشاوره ماهانه رایگان</span>
-              </div>
-
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '15px',
-                backgroundColor: '#dbeafe',
-                borderRadius: '10px'
-              }}>
-                <span style={{ color: '#16a34a', fontSize: '1.2rem' }}>✅</span>
-                <span style={{ color: '#1e40af', fontWeight: '500' }}>کش‌بک ۱٪ از خریدها</span>
-              </div>
-
-            </div>
           </div>
-
         </div>
 
         {/* How to Earn Points */}
@@ -411,7 +296,7 @@ export default function Loyalty() {
               <p style={{ fontSize: '0.8rem', color: '#15803d' }}>
                 ۱ امتیاز به ازای هر میلیون ریال
               </p>
-            </div>
+              </div>
 
             <div style={{
               textAlign: 'center',
@@ -426,38 +311,6 @@ export default function Loyalty() {
               </h4>
               <p style={{ fontSize: '0.8rem', color: '#1d4ed8' }}>
                 ۵۰۰ امتیاز به ازای هر دعوت موفق
-              </p>
-            </div>
-
-            <div style={{
-              textAlign: 'center',
-              padding: '25px',
-              backgroundColor: '#f3e8ff',
-              borderRadius: '12px',
-              border: '1px solid #d8b4fe'
-            }}>
-              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>⭐</div>
-              <h4 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#7c3aed' }}>
-                نظر و امتیاز
-              </h4>
-              <p style={{ fontSize: '0.8rem', color: '#8b5cf6' }}>
-                ۵۰ امتیاز برای هر نظر
-              </p>
-            </div>
-
-            <div style={{
-              textAlign: 'center',
-              padding: '25px',
-              backgroundColor: '#fef3c7',
-              borderRadius: '12px',
-              border: '1px solid #fde68a'
-            }}>
-              <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🗓️</div>
-              <h4 style={{ fontWeight: 'bold', marginBottom: '8px', color: '#d97706' }}>
-                فعالیت روزانه
-              </h4>
-              <p style={{ fontSize: '0.8rem', color: '#f59e0b' }}>
-                ۱۰ امتیاز روزانه برای ورود
               </p>
             </div>
 

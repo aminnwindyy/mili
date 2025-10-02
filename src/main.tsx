@@ -20,6 +20,7 @@ import Referral from '@/Pages/Referral';
 import Wallet from '@/Pages/Wallet';
 import Watchlist from '@/Pages/Watchlist';
 import SecondaryMarket from '@/Pages/SecondaryMarket';
+import Loyalty from '@/Pages/Loyalty';
 
 import Layout from '@/Layout';
 
@@ -48,6 +49,7 @@ root.render(
           <Route path="/Wallet" element={<Wallet />} />
           <Route path="/Watchlist" element={<Watchlist />} />
           <Route path="/SecondaryMarket" element={<SecondaryMarket />} />
+          <Route path="/Loyalty" element={<Loyalty />} />
         </Routes>
       </Layout>
     </BrowserRouter>

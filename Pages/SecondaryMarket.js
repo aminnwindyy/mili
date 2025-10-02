@@ -30,15 +30,18 @@ const truncate = (s, n = 28) => (s?.length > n ? s.slice(0, n) + "…" : s);
 
 // market feeds (mock-friendly)
 const useTicker = () => {
-  const [data, setData] = useState({ last: 60000000, change24h: 2.5, high24h: 61500000, low24h: 58000000, volume24h: 1200 });
+  const [data, setData] = useState({ last: 0, change24h: 0, high24h: 0, low24h: 0, volume24h: 0 });
   useEffect(() => {
+    // Set mock data immediately
+    setData({ last: 60000000, change24h: 2.5, high24h: 61500000, low24h: 58000000, volume24h: 1200 });
+    
     const load = () => {
       fetch('/api/secondary-market/ticker')
         .then(r => r.json())
         .then(setData)
         .catch(() => {
-          // Fallback to mock data if API fails
-          setData({ last: 60000000, change24h: 2.5, high24h: 61500000, low24h: 58000000, volume24h: 1200 });
+          // Keep mock data if API fails
+          console.log('API failed, using mock data');
         });
     };
     load();
@@ -49,31 +52,33 @@ const useTicker = () => {
 };
 
 const useOrderbook = () => {
-  const [book, setBook] = useState({ bids: [], asks: [], mid: 60000000 });
+  const [book, setBook] = useState({ bids: [], asks: [], mid: 0 });
   useEffect(() => {
-    const load = () => {
-      fetch('/api/secondary-market/orderbook')
-        .then(r => r.json())
-        .then(setBook)
-        .catch(() => {
-          // Fallback to mock data if API fails
-          const mid = 60000000;
+    // Generate mock data immediately
+    const mid = 60000000;
     const genLevels = (count, side) => {
       const levels = [];
       for (let i = 0; i < count; i++) {
         const price = side === 'ask' 
-                ? mid + (i + 1) * 200000 + Math.floor(Math.random() * 50000)
-                : mid - (i + 1) * 200000 - Math.floor(Math.random() * 50000);
+          ? mid + (i + 1) * 200000 + Math.floor(Math.random() * 50000)
+          : mid - (i + 1) * 200000 - Math.floor(Math.random() * 50000);
         const size = Math.floor(5 + Math.random() * 120);
         levels.push({ price, size });
       }
       return levels;
     };
-          setBook({
-            asks: genLevels(12, 'ask').sort((a, b) => a.price - b.price),
-            bids: genLevels(12, 'bid').sort((a, b) => b.price - a.price),
-            mid
-          });
+    setBook({
+      asks: genLevels(12, 'ask').sort((a, b) => a.price - b.price),
+      bids: genLevels(12, 'bid').sort((a, b) => b.price - a.price),
+      mid
+    });
+    
+    const load = () => {
+      fetch('/api/secondary-market/orderbook')
+        .then(r => r.json())
+        .then(setBook)
+        .catch(() => {
+          console.log('Orderbook API failed, using mock data');
         });
     };
     load();
@@ -86,22 +91,24 @@ const useOrderbook = () => {
 const useTrades = () => {
   const [trades, setTrades] = useState([]);
   useEffect(() => {
+    // Set mock data immediately
+    const mid = 60000000;
+    setTrades([
+      { id: 't1', side: 'buy', price: mid + 120000, size: 12, time: new Date().toISOString() },
+      { id: 't2', side: 'sell', price: mid - 80000, size: 20, time: new Date(Date.now() - 30000).toISOString() },
+      { id: 't3', side: 'buy', price: mid + 50000, size: 8, time: new Date(Date.now() - 60000).toISOString() },
+      { id: 't4', side: 'sell', price: mid - 150000, size: 15, time: new Date(Date.now() - 90000).toISOString() },
+      { id: 't5', side: 'buy', price: mid + 80000, size: 25, time: new Date(Date.now() - 120000).toISOString() },
+    ]);
+    
     const load = () => {
       fetch('/api/secondary-market/trades')
         .then(r => r.json())
         .then(d => setTrades(d.data || []))
         .catch(() => {
-          // Fallback to mock data if API fails
-          const mid = 60000000;
-          setTrades([
-            { id: 't1', side: 'buy', price: mid + 120000, size: 12, time: new Date().toISOString() },
-            { id: 't2', side: 'sell', price: mid - 80000, size: 20, time: new Date(Date.now() - 30000).toISOString() },
-            { id: 't3', side: 'buy', price: mid + 50000, size: 8, time: new Date(Date.now() - 60000).toISOString() },
-            { id: 't4', side: 'sell', price: mid - 150000, size: 15, time: new Date(Date.now() - 90000).toISOString() },
-            { id: 't5', side: 'buy', price: mid + 80000, size: 25, time: new Date(Date.now() - 120000).toISOString() },
-          ]);
-    });
-  };
+          console.log('Trades API failed, using mock data');
+        });
+    };
     load();
     const t = setInterval(load, 4000);
     return () => clearInterval(t);
@@ -125,7 +132,7 @@ const OrderBook = ({ book }) => {
       </Card>
     );
   }
-  
+
   return (
     <Card className="border-0 shadow-md">
       <CardHeader className="pb-2"><CardTitle className="text-slate-900 text-base">دفتر سفارشات</CardTitle></CardHeader>
@@ -559,6 +566,9 @@ export default function SecondaryMarket() {
 
   // Debug logging
   console.log('Secondary Market Data:', { holdings, listings, ticker, book, trades });
+  
+  // Show loading state if no data
+  const isLoading = !ticker.last || !book.asks?.length || !trades.length;
 
   const [filters, setFilters] = useState({ q: "", location: "", minYield: "", maxPrice: "" });
   const [page, setPage] = useState(1);
@@ -612,35 +622,47 @@ export default function SecondaryMarket() {
             
             {/* Market layout: orderbook + trades + orderform */}
             <div className="mb-8">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">بازار زنده</h2>
-              <div className="grid lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 space-y-6">
-                  {/* KPI bar */}
-                  <Card className="border-0 shadow-md">
-                    <CardContent className="p-4 grid grid-cols-3 gap-3 text-sm">
-                      <div>
-                        <div className="text-slate-500">آخرین قیمت</div>
-                        <div className="font-bold text-slate-900">{currency(ticker.last)} ریال</div>
-                      </div>
-                      <div>
-                        <div className="text-slate-500">تغییر ۲۴س</div>
-                        <div className={ticker.change24h >= 0 ? 'font-bold text-emerald-600' : 'font-bold text-red-600'}>
-                          {ticker.change24h >= 0 ? '+' : ''}{pct(ticker.change24h)}
+              <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-emerald-600" />
+                بازار زنده
+                {isLoading && <span className="text-sm text-slate-500">(در حال بارگذاری...)</span>}
+              </h2>
+              
+              {isLoading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+                  <p className="text-slate-500">در حال بارگذاری داده‌های بازار...</p>
+                </div>
+              ) : (
+                <div className="grid lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2 space-y-6">
+                    {/* KPI bar */}
+                    <Card className="border-0 shadow-md bg-gradient-to-r from-emerald-50 to-blue-50">
+                      <CardContent className="p-4 grid grid-cols-3 gap-3 text-sm">
+                        <div>
+                          <div className="text-slate-500">آخرین قیمت</div>
+                          <div className="font-bold text-slate-900">{currency(ticker.last)} ریال</div>
                         </div>
-                      </div>
-                      <div>
-                        <div className="text-slate-500">بالا/پایین ۲۴س</div>
-                        <div className="font-medium text-slate-700">{currency(ticker.high24h)} / {currency(ticker.low24h)}</div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <OrderBook book={book} />
-                  <TradesTicker trades={trades} />
+                        <div>
+                          <div className="text-slate-500">تغییر ۲۴س</div>
+                          <div className={ticker.change24h >= 0 ? 'font-bold text-emerald-600' : 'font-bold text-red-600'}>
+                            {ticker.change24h >= 0 ? '+' : ''}{pct(ticker.change24h)}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-slate-500">بالا/پایین ۲۴س</div>
+                          <div className="font-medium text-slate-700">{currency(ticker.high24h)} / {currency(ticker.low24h)}</div>
+                        </div>
+                </CardContent>
+              </Card>
+                    <OrderBook book={book} />
+                    <TradesTicker trades={trades} />
+                  </div>
+                  <div className="space-y-6">
+                    <OrderForm />
+                  </div>
                 </div>
-                <div className="space-y-6">
-                  <OrderForm />
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Marketplace listings */}
@@ -655,35 +677,6 @@ export default function SecondaryMarket() {
           </TabsContent>
         </Tabs>
 
-        <div className="grid md:grid-cols-3 gap-4">
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-5">
-              <div className="flex items-center gap-2 text-slate-500 text-sm">
-                <TrendingUp className="w-4 h-4 text-emerald-600" /> میانگین بازدهی ۳۰ روز
-              </div>
-              <div className="text-2xl font-bold text-emerald-600 mt-2">+۸.۷%</div>
-              <div className="text-xs text-slate-500 mt-1">مبنای ۱۲۶ معامله</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-5">
-              <div className="flex items-center gap-2 text-slate-500 text-sm">
-                <TrendingDown className="w-4 h-4 text-red-600" /> میانگین کارمزد شبکه
-              </div>
-              <div className="text-2xl font-bold text-slate-900 mt-2">۰.۰۰۰۴۲ MATIC</div>
-              <div className="text-xs text-slate-500 mt-1">شبکه: Polygon</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-md">
-            <CardContent className="p-5">
-              <div className="flex items-center gap-2 text-slate-500 text-sm">
-                <DollarSign className="w-4 h-4 text-blue-600" /> قیمت میانگین هر توکن
-              </div>
-              <div className="text-2xl font-bold text-slate-900 mt-2">{currency(48_900_000)} ریال</div>
-              <div className="text-xs text-slate-500 mt-1">بر اساس ۳۴ ملک</div>
-            </CardContent>
-          </Card>
-        </div>
         <SellModal open={sellOpen} holding={selectedHolding} onClose={() => setSellOpen(false)} onSubmit={handleSellSubmit} />
       </div>
     </div>

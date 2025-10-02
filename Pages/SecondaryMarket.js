@@ -21,6 +21,7 @@ import {
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
+  Activity,
 } from "lucide-react";
 
 // helpers

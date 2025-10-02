@@ -456,7 +456,7 @@ export default function CreateToken() {
                 </div>
               </div>
             </div>
-          </div>
+                </div>
         );
 
       case 4:
@@ -676,8 +676,8 @@ export default function CreateToken() {
                   className="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 />
               </div>
-            </div>
-          </div>
+                  </div>
+                </div>
         );
 
       case 6:
@@ -701,7 +701,7 @@ export default function CreateToken() {
               </ul>
             </div>
             <Button 
-              onClick={() => window.location.href = '/owner-portal'}
+              onClick={() => window.location.href = '/OwnerPortal'}
               className="bg-purple-600 hover:bg-purple-700"
             >
               بازگشت به پورتال مالکین
@@ -817,8 +817,8 @@ export default function CreateToken() {
                   <>
                     ثبت درخواست
                     <Check className="w-4 h-4" />
-                  </>
-                )}
+              </>
+            )}
               </Button>
             )}
           </div>

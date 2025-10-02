@@ -80,13 +80,13 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="flex flex-col gap-3 w-full max-w-sm mx-auto sm:max-w-none">
+              <div className="flex flex-col gap-2 w-full max-w-xs mx-auto sm:max-w-sm">
                 <Button 
                   onClick={() => handleGetStarted()}
-                  className="w-full h-14 px-6 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
+                  className="w-full h-12 px-4 text-sm font-medium bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white shadow-md transition-all duration-300 rounded-lg sm:h-14 sm:px-6 sm:text-lg sm:rounded-xl"
                 >
                   شروع سرمایه‌گذاری
-                  <ArrowUpLeft className="mr-2 w-5 h-5" />
+                  <ArrowUpLeft className="mr-1 w-4 h-4 sm:mr-2 sm:w-5 sm:h-5" />
                 </Button>
                 <div className="w-full">
                   <GuestModeButton />
@@ -94,14 +94,14 @@ export default function Home() {
               </div>
 
               {/* کوتاه‌ترین مسیر ثبت‌نام */}
-              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-sm">
+              <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-white/30 shadow-sm max-w-xs mx-auto sm:max-w-sm sm:rounded-xl sm:p-4">
                 <div className="text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Zap className="w-4 h-4 text-emerald-600" />
-                    <span className="text-sm font-medium text-slate-700">ثبت‌نام فوری</span>
+                  <div className="flex items-center justify-center gap-1 mb-1 sm:gap-2 sm:mb-2">
+                    <Zap className="w-3 h-3 text-emerald-600 sm:w-4 sm:h-4" />
+                    <span className="text-xs font-medium text-slate-700 sm:text-sm">ثبت‌نام فوری</span>
                   </div>
                   <p className="text-xs text-slate-500">
-                    موبایل → کد تایید → شروع! ⏱️
+                    موبایل → کد → شروع! ⏱️
                   </p>
                 </div>
               </div>

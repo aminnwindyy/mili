@@ -20,11 +20,11 @@ export default function GuestModeButton() {
       <Button
         onClick={handleGuestMode}
         variant="outline"
-        className="w-full h-14 text-lg font-medium bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-100 hover:to-yellow-100 text-amber-800 transition-all duration-300 rounded-xl"
+        className="w-full h-12 text-sm font-medium bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300 hover:border-amber-400 hover:bg-gradient-to-r hover:from-amber-100 hover:to-yellow-100 text-amber-800 transition-all duration-300 rounded-lg sm:h-14 sm:text-lg sm:rounded-xl"
       >
-        <Eye className="w-5 h-5 mr-2" />
+        <Eye className="w-4 h-4 mr-1 sm:w-5 sm:h-5 sm:mr-2" />
         تست بدون ثبت‌نام
-        <Zap className="w-4 h-4 mr-2 text-amber-600" />
+        <Zap className="w-3 h-3 mr-1 sm:w-4 sm:h-4 sm:mr-2 text-amber-600" />
       </Button>
     </Link>
   );

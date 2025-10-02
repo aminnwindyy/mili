@@ -80,28 +80,28 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="flex flex-col gap-3 w-full">
+              <div className="flex flex-col gap-3 w-full max-w-sm mx-auto sm:max-w-none">
                 <Button 
                   onClick={() => handleGetStarted()}
-                  className="w-full h-12 sm:h-14 px-6 text-base sm:text-lg bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="w-full h-14 px-6 text-lg font-semibold bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl"
                 >
                   شروع سرمایه‌گذاری
-                  <ArrowUpLeft className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+                  <ArrowUpLeft className="mr-2 w-5 h-5" />
                 </Button>
-                <GuestModeButton />
+                <div className="w-full">
+                  <GuestModeButton />
+                </div>
               </div>
 
               {/* کوتاه‌ترین مسیر ثبت‌نام */}
-              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-3 sm:p-4 border border-white/20">
-                <div className="text-center sm:text-right">
-                  <p className="text-xs sm:text-sm text-slate-600 mb-1">
-                    <span className="inline-flex items-center gap-1">
-                      <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600" />
-                      ثبت‌نام فوری
-                    </span>
-                  </p>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/30 shadow-sm">
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Zap className="w-4 h-4 text-emerald-600" />
+                    <span className="text-sm font-medium text-slate-700">ثبت‌نام فوری</span>
+                  </div>
                   <p className="text-xs text-slate-500">
-                    شماره موبایل → کد تایید → شروع! ⏱️
+                    موبایل → کد تایید → شروع! ⏱️
                   </p>
                 </div>
               </div>
@@ -192,16 +192,16 @@ export default function Home() {
             به جمع بیش از ۱۰ هزار سرمایه‌گذار هوشمند بپیوندید
           </p>
           
-          <div className="flex flex-col gap-4 justify-center items-center w-full max-w-lg mx-auto">
+          <div className="flex flex-col gap-4 justify-center items-center w-full max-w-md mx-auto px-4">
             <Link to={createPageUrl("Properties")} className="w-full">
-              <Button size="lg" variant="secondary" className="w-full text-base sm:text-lg px-6 py-3 sm:py-4 rounded-xl bg-white text-emerald-700 hover:bg-gray-100">
-                <Eye className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <Button className="w-full h-14 text-lg font-semibold px-6 rounded-xl bg-white text-emerald-700 hover:bg-gray-50 shadow-lg hover:shadow-xl transition-all duration-300">
+                <Eye className="w-5 h-5 mr-2" />
                 شروع سرمایه‌گذاری
               </Button>
             </Link>
             <Link to={createPageUrl("OwnerPortal")} className="w-full">
-              <Button size="lg" variant="outline" className="w-full text-base sm:text-lg px-6 py-3 sm:py-4 rounded-xl border-2 border-white text-white hover:bg-white/10">
-                <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              <Button variant="outline" className="w-full h-14 text-lg font-semibold px-6 rounded-xl border-2 border-white text-white hover:bg-white/20 hover:border-white/80 transition-all duration-300">
+                <Plus className="w-5 h-5 mr-2" />
                 ثبت ملک برای توکن‌سازی
               </Button>
             </Link>

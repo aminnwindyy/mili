@@ -28,9 +28,13 @@ import InteractiveChart from "@/components/dashboard/InteractiveChart";
 import WeeklySummary from "@/components/dashboard/WeeklySummary";
 import SimpleAdvancedToggle from "@/components/ui/SimpleAdvancedToggle";
 import DashboardWidget from "@/components/dashboard/DashboardWidget";
+import GamificationWidget from "@/components/ui/GamificationWidget";
+import LeaderboardWidget from "@/components/ui/LeaderboardWidget";
 
 const initialWidgetsConfig = [
   { id: 'stats', component: StatsCard },
+  { id: 'gamification', component: GamificationWidget },
+  { id: 'leaderboard', component: LeaderboardWidget },
   { id: 'chart', component: InteractiveChart, advancedOnly: true },
   { id: 'journey', component: InvestmentJourneyWidget },
   { id: 'recent', component: RecentProperties },
@@ -154,6 +158,10 @@ export default function Dashboard() {
             <StatsCard title="بازدهی میانگین" value={demoMode ? "۱۸.۵%" : "۱۵.۲%"} icon={TrendingUp} gradient="from-purple-500 to-pink-600" trend="سالانه" />
           </div>
         );
+      case 'gamification':
+        return <GamificationWidget userId={user?.id || "demo_user"} />;
+      case 'leaderboard':
+        return <LeaderboardWidget userId={user?.id || "demo_user"} />;
       case 'chart':
         return <InteractiveChart data={chartData} title="روند ارزش پورتفو (7 روز گذشته)" />;
       case 'journey':

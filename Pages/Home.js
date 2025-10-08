@@ -47,6 +47,7 @@ import MarketInsights from "@/components/home/MarketInsights";
 import PublicHeader from "@/components/home/PublicHeader";
 import PublicFooter from "@/components/home/PublicFooter";
 import GuestModeButton from "@/components/ui/GuestModeButton"; // Added GuestModeButton
+import QuestWidget from "@/components/ui/QuestWidget";
 
 export default function Home() {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -171,6 +172,24 @@ export default function Home() {
 
       {/* Projects Showcase with New Filters */}
       <ProjectsShowcase />
+
+      {/* Quest Widget Section */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              ماموریت‌های <span className="text-blue-600">امروز</span>
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              با کامل کردن کوئست‌ها، امتیاز بگیرید و سطح خود را بالا ببرید!
+            </p>
+          </div>
+          
+          <div className="max-w-2xl mx-auto">
+            <QuestWidget compact={false} />
+          </div>
+        </div>
+      </section>
 
       {/* Ecosystem Flow Section */}
       <EcosystemFlow />

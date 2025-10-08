@@ -48,6 +48,7 @@ import PublicHeader from "@/components/home/PublicHeader";
 import PublicFooter from "@/components/home/PublicFooter";
 import GuestModeButton from "@/components/ui/GuestModeButton"; // Added GuestModeButton
 import QuestWidget from "@/components/ui/QuestWidget";
+import GamificationWidget from "@/components/ui/GamificationWidget";
 
 export default function Home() {
   const navigate = useNavigate(); // Initialize useNavigate hook
@@ -187,6 +188,24 @@ export default function Home() {
           
           <div className="max-w-2xl mx-auto">
             <QuestWidget compact={false} />
+          </div>
+        </div>
+      </section>
+
+      {/* Gamification Widget Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-emerald-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
+              پروفایل <span className="text-emerald-600">گیمیفیکیشن</span>
+            </h2>
+            <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+              سطح خود را بالا ببرید، در مسابقات شرکت کنید و جوایز ویژه برنده شوید!
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <GamificationWidget userId="demo_user" />
           </div>
         </div>
       </section>

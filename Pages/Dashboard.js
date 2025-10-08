@@ -3,11 +3,11 @@ import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { Property } from "@/entities/Property";
 import { Investment } from "@/entities/Investment";
 import { User } from "@/entities/User";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { formatCurrency } from "@/components/ui/formatters";
+import { formatCurrency } from "@/Components/ui/formatters";
 import { 
   Building2, 
   Coins, 
@@ -20,21 +20,29 @@ import {
   Settings
 } from "lucide-react";
 
-import StatsCard from "@/components/dashboard/StatsCard";
-import RecentProperties from "@/components/dashboard/RecentProperties";
-import InvestmentOverview from "@/components/dashboard/InvestmentOverview";
-import InvestmentJourneyWidget from "@/components/dashboard/InvestmentJourneyWidget";
-import InteractiveChart from "@/components/dashboard/InteractiveChart";
-import WeeklySummary from "@/components/dashboard/WeeklySummary";
-import SimpleAdvancedToggle from "@/components/ui/SimpleAdvancedToggle";
-import DashboardWidget from "@/components/dashboard/DashboardWidget";
-import GamificationWidget from "@/components/ui/GamificationWidget";
-import LeaderboardWidget from "@/components/ui/LeaderboardWidget";
+import StatsCard from "@/Components/dashboard/StatsCard";
+import RecentProperties from "@/Components/dashboard/RecentProperties";
+import InvestmentOverview from "@/Components/dashboard/InvestmentOverview";
+import InvestmentJourneyWidget from "@/Components/dashboard/InvestmentJourneyWidget";
+import InteractiveChart from "@/Components/dashboard/InteractiveChart";
+import WeeklySummary from "@/Components/dashboard/WeeklySummary";
+import SimpleAdvancedToggle from "@/Components/ui/SimpleAdvancedToggle";
+import DashboardWidget from "@/Components/dashboard/DashboardWidget";
+import GamificationWidget from "@/Components/ui/GamificationWidget";
+import LeaderboardWidget from "@/Components/ui/LeaderboardWidget";
+import EmbeddedBankingWidget from "@/Components/ui/EmbeddedBankingWidget";
+import CryptoIntegrationWidget from "@/Components/ui/CryptoIntegrationWidget";
+import SocialTradingWidget from "@/Components/ui/SocialTradingWidget";
+import MarketplaceWidget from "@/Components/ui/MarketplaceWidget";
 
 const initialWidgetsConfig = [
   { id: 'stats', component: StatsCard },
   { id: 'gamification', component: GamificationWidget },
   { id: 'leaderboard', component: LeaderboardWidget },
+  { id: 'banking', component: EmbeddedBankingWidget },
+  { id: 'crypto', component: CryptoIntegrationWidget },
+  { id: 'social', component: SocialTradingWidget },
+  { id: 'marketplace', component: MarketplaceWidget },
   { id: 'chart', component: InteractiveChart, advancedOnly: true },
   { id: 'journey', component: InvestmentJourneyWidget },
   { id: 'recent', component: RecentProperties },
@@ -162,6 +170,14 @@ export default function Dashboard() {
         return <GamificationWidget userId={user?.id || "demo_user"} />;
       case 'leaderboard':
         return <LeaderboardWidget userId={user?.id || "demo_user"} />;
+      case 'banking':
+        return <EmbeddedBankingWidget userId={user?.id || "demo_user"} />;
+      case 'crypto':
+        return <CryptoIntegrationWidget userId={user?.id || "demo_user"} />;
+      case 'social':
+        return <SocialTradingWidget userId={user?.id || "demo_user"} />;
+      case 'marketplace':
+        return <MarketplaceWidget userId={user?.id || "demo_user"} />;
       case 'chart':
         return <InteractiveChart data={chartData} title="روند ارزش پورتفو (7 روز گذشته)" />;
       case 'journey':

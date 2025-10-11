@@ -5,7 +5,6 @@ import { Badge } from '@/Components/ui/badge';
 import { Progress } from '@/Components/ui/progress';
 import { 
   Bitcoin, 
-  Ethereum, 
   DollarSign, 
   TrendingUp,
   ArrowUpRight,
@@ -38,7 +37,7 @@ const CryptoIntegrationWidget = ({ userId = "demo_user" }) => {
 
   const cryptoOptions = [
     { symbol: 'BTC', name: 'Bitcoin', icon: Bitcoin, color: 'orange', price: 45000000 },
-    { symbol: 'ETH', name: 'Ethereum', icon: Ethereum, color: 'blue', price: 12000000 },
+    { symbol: 'ETH', name: 'Ethereum', icon: Coins, color: 'blue', price: 12000000 },
     { symbol: 'USDT', name: 'Tether', icon: DollarSign, color: 'green', price: 42000 }
   ];
 
